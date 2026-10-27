@@ -9,16 +9,12 @@ const root = new URL('../../', import.meta.url);
 const read = (path) => readFileSync(new URL(path, root), 'utf8');
 const pages = htmlPages(new URL('website/', root));
 
-async function fetchText(url) {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
-  return response.text();
-}
-
 // The asset names the release job publishes: the dist/ files of `gh release create` in the game repository's
 // build.yml (ADR 0001). RV2_BUILD_YML names a local copy instead, for offline runs.
 const BUILD_YML = 'https://raw.githubusercontent.com/Hub-Tansky/RoboViolence2/main/.github/workflows/build.yml';
-const releaseJob = process.env.RV2_BUILD_YML ? readFileSync(process.env.RV2_BUILD_YML, 'utf8') : await fetchText(BUILD_YML);
+const releaseJob = process.env.RV2_BUILD_YML
+  ? readFileSync(process.env.RV2_BUILD_YML, 'utf8')
+  : await fetch(BUILD_YML).then((r) => (r.ok ? r.text() : Promise.reject(new Error(`${BUILD_YML}: HTTP ${r.status}`))));
 const assetNames = [...releaseJob.matchAll(/dist\/(roboviolence2-[\w.${}-]+)/g)]
   .map((m) => m[1].replace('${GITHUB_REF_NAME}', 'v0.0.2'))
   .filter((name, i, all) => all.indexOf(name) === i);
