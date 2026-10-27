@@ -1,12 +1,12 @@
-# The website (website/, ADR 0029): tests on PRs, deploys to GitHub Pages from main.
-# build.yml is a trigger because the tests read the release job's asset names from it.
+# The website (website/, ADR 0029, 0001): tests on PRs, deploys to GitHub Pages from main.
+# The daily run catches a release file rename in the game repository's build.yml, which the tests read.
 name: pages
 on:
   push:
     branches: [main]
-    paths: ["website/**", "tests/website/**", "tools/website-markdown.mjs", ".github/workflows/pages.yml", ".github/workflows/build.yml"]
   pull_request:
-    paths: ["website/**", "tests/website/**", "tools/website-markdown.mjs", ".github/workflows/pages.yml", ".github/workflows/build.yml"]
+  schedule:
+    - cron: "17 5 * * *"
   workflow_dispatch:
 permissions:
   contents: read
@@ -24,7 +24,7 @@ jobs:
       - run: node --test tests/website/site.test.mjs
   deploy:
     needs: test
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     permissions:
       pages: write

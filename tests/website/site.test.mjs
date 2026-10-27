@@ -1,4 +1,4 @@
-// Website download logic and shared page chrome (website/, ADR 0029, 0035). Run: node --test tests/website/site.test.mjs
+// Website download logic and shared page chrome (website/, ADR 0029, 0035, 0001). Run: node --test tests/website/site.test.mjs
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import test from 'node:test';
@@ -9,8 +9,16 @@ const root = new URL('../../', import.meta.url);
 const read = (path) => readFileSync(new URL(path, root), 'utf8');
 const pages = htmlPages(new URL('website/', root));
 
-// The asset names the release job publishes: the dist/ files of `gh release create` in build.yml
-const releaseJob = read('.github/workflows/build.yml');
+async function fetchText(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
+  return response.text();
+}
+
+// The asset names the release job publishes: the dist/ files of `gh release create` in the game repository's
+// build.yml (ADR 0001). RV2_BUILD_YML names a local copy instead, for offline runs.
+const BUILD_YML = 'https://raw.githubusercontent.com/Hub-Tansky/RoboViolence2/main/.github/workflows/build.yml';
+const releaseJob = process.env.RV2_BUILD_YML ? readFileSync(process.env.RV2_BUILD_YML, 'utf8') : await fetchText(BUILD_YML);
 const assetNames = [...releaseJob.matchAll(/dist\/(roboviolence2-[\w.${}-]+)/g)]
   .map((m) => m[1].replace('${GITHUB_REF_NAME}', 'v0.0.2'))
   .filter((name, i, all) => all.indexOf(name) === i);
@@ -23,7 +31,7 @@ const release = {
 };
 
 test('the release job publishes exactly one installer per OS', () => {
-  assert.ok(assetNames.length >= 4, `asset names from build.yml: ${assetNames}`);
+  assert.ok(assetNames.length >= 4, `asset names from the game's build.yml: ${assetNames}`);
   for (const [os, { suffix }] of Object.entries(PLATFORMS)) {
     assert.equal(assetNames.filter((n) => n.endsWith(suffix)).length, 1, `${os}: ${suffix} in ${assetNames}`);
   }

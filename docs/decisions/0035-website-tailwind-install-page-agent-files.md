@@ -1,6 +1,6 @@
 # 0035: The website uses Tailwind from its CDN, has a separate install guide and publishes files for AI agents
 
-- Status: Accepted
+- Status: Accepted, amended by [ADR 0001](0001-website-in-its-own-repository.md) (moved to this repository)
 - Date: 2026-10-23
 - Affects: `website/`, `tools/website-markdown.mjs`, `tests/website/site.test.mjs`, `.github/workflows/pages.yml`, `packaging/discord_release_post.py`; amends ADR 0029
 
