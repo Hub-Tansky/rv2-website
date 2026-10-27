@@ -4,6 +4,8 @@ The Windows and Linux downloads include the game server (`bv2dedicated`). On mac
 
 A new server shows up in the in-game server list by itself.
 
+For a quick game with friends you need no separate server: the **Host** tab in the game runs one inside the game on every OS, including the macOS app from the `.dmg`. It stops when you leave the match, and your frame rate is the server's tick. Players outside your network still need the port below open. Use the standalone server for anything that should stay up.
+
 ## Ports
 
 Open inbound **TCP 3333**. A team deathmatch server (launch script `TDM`) uses **TCP 3334**. All game traffic is TCP.
