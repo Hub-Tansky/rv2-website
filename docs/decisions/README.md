@@ -33,6 +33,7 @@ What we do, in one or two sentences.
 | ADR | Decision | Status |
 |---|---|---|
 | [0001](0001-website-in-its-own-repository.md) | The website lives in its own repository; tests read the game's release file names from its `build.yml` | Accepted |
+| [0002](0002-map-submissions-on-a-cloudflare-worker.md) | Map submissions go through a Cloudflare Worker with Discord sign-in, R2 and D1 | Accepted |
 | [0029](0029-static-website-on-github-pages.md) | The website is static HTML on GitHub Pages; downloads come from the GitHub releases API | Accepted, amended by 0035, 0001 |
 | [0035](0035-website-tailwind-install-page-agent-files.md) | The website uses Tailwind from its CDN, has a separate install guide and publishes files for AI agents | Accepted, amended by 0001 |
 

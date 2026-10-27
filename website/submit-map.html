@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Submit a map - Robo Violence 2</title>
+  <meta name="description" content="Send your Robo Violence 2 map to the project: sign in with Discord, upload the .bvm file and accept the map submission agreement.">
+  <link rel="canonical" href="https://roboviolence.com/submit-map.html">
+  <link rel="alternate" type="text/markdown" href="submit-map.md">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Robo Violence 2">
+  <meta property="og:title" content="Submit a map - Robo Violence 2">
+  <meta property="og:description" content="Send your Robo Violence 2 map to the project: sign in with Discord, upload the .bvm file and accept the map submission agreement.">
+  <meta property="og:url" content="https://roboviolence.com/submit-map.html">
+  <meta property="og:image" content="https://roboviolence.com/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Robo Violence 2: a blue and a red player shooting at each other in a top-down arena">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#2f7df6">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="img/rv2-icon.png">
+  <style>body { background: #12141b; color: #e6e8ef; }</style>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="theme.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/lucide@1.49.0/dist/umd/lucide.min.js"></script>
+  <script type="module" src="site.js"></script>
+  <script type="module" src="submit-map.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <nav class="site-nav site-container" aria-label="Main">
+    <a class="site-brand" href="./"><img src="img/rv2-icon.png" width="32" height="32" alt="">Robo Violence 2</a>
+    <button class="menu-button" type="button" data-menu-button aria-expanded="false" aria-controls="menu"><i data-lucide="menu"></i><span class="sr-only">Menu</span></button>
+    <div class="menu" id="menu">
+      <a class="nav-link" href="install.html">Download</a>
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link" data-discord href="#">Discord server</a>
+      <a class="nav-link" href="server.html">Your own game server</a>
+    </div>
+  </nav>
+</header>
+
+<main class="page">
+  <div class="page-body site-container">
+    <div class="prose-rv">
+      <h1>Submit a map</h1>
+      <p>Made a map for Robo Violence 2? Send it here. You keep the copyright. By submitting, you give the project a licence to use and distribute the map, as the agreement on this page explains. Every map is reviewed before it ships with the game.</p>
+      <p>You sign in with Discord. We receive your Discord user ID and username, not your email address. What we keep and for how long is in the <a href="privacy.html#maps">privacy policy</a>.</p>
+      <p>You need the map's <code>.bvm</code> file from the game's map editor, and the source and licence of anything in the map you didn't make yourself. Map submissions are for people aged 16 or older.</p>
+
+      <p class="notice" id="status" role="status">Loading the form. It needs JavaScript and a connection to submit.roboviolence.com.</p>
+
+      <section id="signin" hidden>
+        <p><a class="btn-primary" id="signin-link" href="https://submit.roboviolence.com/auth/login"><i data-lucide="log-in"></i>Sign in with Discord</a></p>
+      </section>
+
+      <form id="submit-form" hidden novalidate>
+        <h2>Your map</h2>
+        <div class="field">
+          <span class="field-label">Account</span>
+          <input class="input" id="account" readonly aria-label="Discord account">
+          <span class="field-hint">The submission is recorded under this Discord account. <button class="link" type="button" id="signout">Sign out</button></span>
+        </div>
+        <label class="field"><span class="field-label">Name to credit</span>
+          <input class="input" name="credit_name" maxlength="40" required autocomplete="nickname">
+          <span class="field-hint">Shown with the map if it is published.</span>
+        </label>
+        <label class="field"><span class="field-label">Map title</span>
+          <input class="input" name="title" maxlength="60" required>
+        </label>
+        <label class="field"><span class="field-label">Short description (optional)</span>
+          <textarea class="input" name="description" maxlength="500" rows="3"></textarea>
+        </label>
+        <label class="field"><span class="field-label">Map file</span>
+          <input class="input" name="map" type="file" accept=".bvm" required>
+          <span class="field-hint">A <code>.bvm</code> file, up to 256 kB, that the game can open. Saved by the map editor in your maps folder.</span>
+        </label>
+
+        <h2>Material you didn't make</h2>
+        <fieldset class="field">
+          <legend class="field-label">Does the map include third-party assets (textures, sounds, layouts or anything else made by someone else)?</legend>
+          <label class="choice"><input type="radio" name="third_party" value="none" required>No third-party assets</label>
+          <label class="choice"><input type="radio" name="third_party" value="yes">This map includes third-party assets</label>
+          <span class="field-error" data-error-for="third_party" hidden></span>
+        </fieldset>
+        <div id="assets" hidden>
+          <p>List every asset. Evidence is a link or file showing the licence or permission (PDF, PNG, JPEG or text, up to 4 MB). Without evidence, the map waits for a manual check.</p>
+          <div id="asset-list"></div>
+          <p><button class="btn-secondary" type="button" id="add-asset"><i data-lucide="plus"></i>Add another asset</button></p>
+        </div>
+        <template id="asset-template">
+          <fieldset class="card field">
+            <legend class="field-label">Asset <span data-number></span></legend>
+            <label class="field"><span class="field-label">Asset name</span><input class="input" data-name="asset_name" maxlength="200" required></label>
+            <label class="field"><span class="field-label">Creator or rights holder</span><input class="input" data-name="asset_rightsholder" maxlength="200" required></label>
+            <label class="field"><span class="field-label">Source URL or origin</span><input class="input" data-name="asset_source" maxlength="200" required></label>
+            <label class="field"><span class="field-label">Licence or permission</span><textarea class="input" data-name="asset_license" maxlength="500" rows="2" required></textarea></label>
+            <label class="field"><span class="field-label">Required attribution (optional)</span><input class="input" data-name="asset_attribution" maxlength="200"></label>
+            <label class="field"><span class="field-label">Evidence link (optional)</span><input class="input" data-name="asset_evidence_url" type="url" maxlength="200" placeholder="https://"></label>
+            <label class="field"><span class="field-label">Evidence file (optional)</span><input class="input" data-name="asset_evidence_file" type="file" accept=".pdf,.png,.jpg,.jpeg,.txt"></label>
+            <button class="btn-secondary" type="button" data-remove>Remove this asset</button>
+          </fieldset>
+        </template>
+
+        <h2>Agreement</h2>
+        <p>Robo Violence 2 Community Map Submission Agreement, version <strong id="agreement-version"></strong>. <a id="agreement-print" href="#">Printable copy</a></p>
+        <div class="agreement-text" id="agreement-text" tabindex="0"></div>
+        <label class="choice field"><input type="checkbox" name="agree" value="yes" required><span id="consent-text"></span></label>
+        <span class="field-error" data-error-for="agree" hidden></span>
+        <input type="hidden" name="agreement_sha256">
+
+        <div class="field" id="human-check"></div>
+        <span class="field-error" data-error-for="turnstile" hidden></span>
+        <p class="field-error" id="form-error" role="alert" hidden></p>
+        <p><button class="btn-primary" type="submit" id="submit-button" disabled><i data-lucide="upload"></i>Submit map and accept agreement</button></p>
+      </form>
+
+      <section id="receipt" hidden>
+        <h2>Map received</h2>
+        <p>Thank you. Your map is recorded and waits for review. We'll contact you on Discord if we have questions.</p>
+        <ul id="receipt-list"></ul>
+        <p>Keep a copy of this page (a screenshot is fine): the submission ID and record fingerprint identify exactly what you sent and accepted.</p>
+        <p><a class="btn-secondary" href="submit-map.html">Submit another map</a></p>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer-inner site-container">
+    <div class="flex flex-wrap gap-2">
+      <img alt="GitHub License" src="https://img.shields.io/github/license/Hub-Tansky/RoboViolence2" height="20">
+      <img alt="GitHub Created At" src="https://img.shields.io/github/created-at/Hub-Tansky/RoboViolence2" height="20">
+      <img alt="GitHub Release Date" src="https://img.shields.io/github/release-date-pre/Hub-Tansky/RoboViolence2" height="20">
+    </div>
+    <p><a class="footer-link" href="privacy.html">Privacy policy</a></p>
+  </div>
+</footer>
+</body>
+</html>

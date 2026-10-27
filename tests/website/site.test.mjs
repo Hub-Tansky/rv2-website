@@ -194,3 +194,36 @@ test('the landing page describes the game as schema.org VideoGame data', () => {
   assert.equal(data.url, 'https://roboviolence.com/');
   assert.ok(data.sameAs.includes(DISCORD_INVITE), 'JSON-LD has the current Discord invite');
 });
+
+test('the map form checks the file before upload with the service\'s limits', async () => {
+  const { MAX_MAP_BYTES: serviceMap } = await import('../../worker/src/bvm.js');
+  const { LIMITS } = await import('../../worker/src/submit.js');
+  const { MAX_ASSETS, MAX_EVIDENCE_BYTES, MAX_MAP_BYTES, evidenceFileProblem, mapFileProblem } = await import('../../website/submit-map.js');
+  assert.equal(MAX_MAP_BYTES, serviceMap);
+  assert.equal(MAX_EVIDENCE_BYTES, LIMITS.evidenceBytes);
+  assert.equal(MAX_ASSETS, LIMITS.assets);
+  assert.equal(mapFileProblem({ name: 'CTF-Rock.bvm', size: 2409 }), '');
+  assert.match(mapFileProblem({ name: 'CTF-Rock.zip', size: 2409 }), /\.bvm/);
+  assert.match(mapFileProblem({ name: 'big.bvm', size: MAX_MAP_BYTES + 1 }), /256 kB/);
+  assert.match(mapFileProblem(undefined), /Choose/);
+  assert.equal(evidenceFileProblem({ name: 'permission.PDF', size: 1000 }), '');
+  assert.match(evidenceFileProblem({ name: 'proof.exe', size: 1000 }), /PDF, PNG/);
+});
+
+test('the map form sends the fields the submission service reads', async () => {
+  const { ASSET_FIELDS, FORM_FIELDS } = await import('../../worker/src/submit.js');
+  const page = read('website/submit-map.html');
+  const html = page.slice(page.indexOf('<form id="submit-form"'), page.indexOf('</form>'));
+  const sent = [...html.matchAll(/\sname="([\w-]+)"/g)].map((m) => m[1]).concat('cf-turnstile-response'); // the widget adds the last
+  assert.deepEqual([...new Set(sent)].toSorted(), FORM_FIELDS.toSorted());
+  assert.deepEqual([...html.matchAll(/data-name="(\w+)"/g)].map((m) => m[1]).toSorted(), ASSET_FIELDS.toSorted());
+});
+
+test('the map form receipt lists the record fingerprint and flags missing evidence', async () => {
+  const { receiptLines } = await import('../../website/submit-map.js');
+  const receipt = { id: 'M-20261027-0a1b2c3d', received_at: '2026-10-27T13:00:00.000Z', map: { filename: 'a.bvm', size: 10, sha256: 'ab' }, agreement_version: '1.0', agreement_sha256: 'cd', third_party_count: 1, missing_evidence: 1, receipt_sha256: 'ef' };
+  const lines = Object.fromEntries(receiptLines(receipt));
+  assert.equal(lines['Record fingerprint (SHA-256)'], 'ef');
+  assert.match(lines['Assets without evidence'], /checked by hand/);
+  assert.ok(!('Assets without evidence' in Object.fromEntries(receiptLines({ ...receipt, missing_evidence: 0 }))));
+});

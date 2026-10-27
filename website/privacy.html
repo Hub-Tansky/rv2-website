@@ -45,8 +45,8 @@
     <div class="prose-rv">
   <section>
     <h1>Privacy policy</h1>
-    <p>Last updated: 23 October 2026</p>
-    <p>In short: Robo Violence 2 has no accounts, no analytics, no advertising, no telemetry and no crash reporting. To play online, the game servers need your IP address and see the nickname and chat messages you choose. We keep as little of this as possible, for as short as possible, and never sell it.</p>
+    <p>Last updated: 27 October 2026</p>
+    <p>In short: Robo Violence 2 has no accounts, no analytics, no advertising, no telemetry and no crash reporting. To play online, the game servers need your IP address and see the nickname and chat messages you choose. If you submit a map, we keep your Discord user ID and username with the map, as a record of the licence you gave. We keep as little of this as possible, for as short as possible, and never sell it.</p>
   </section>
 
   <section id="controller">
@@ -76,6 +76,15 @@
     <p>Requests to the servers' admin interface (admin.roboviolence.com) are logged with the time, the requester's IP address and the command.</p>
     <h3>This website</h3>
     <p>This website sets no cookies and uses no analytics or tracking. It is hosted on GitHub Pages; GitHub processes your IP address and request details to deliver the pages. Your browser also loads the page styles from cdn.tailwindcss.com, the icons from cdn.jsdelivr.net, the release list from api.github.com and three badge images from img.shields.io; each of them sees your IP address. Downloads come from GitHub Releases.</p>
+    <h3 id="maps">Map submissions</h3>
+    <p>When you submit a map at roboviolence.com/submit-map.html, the submission service at submit.roboviolence.com processes:</p>
+    <ul>
+      <li><strong>Your Discord account</strong>: you sign in with Discord, which tells us your Discord user ID, username and display name. We don't receive your email address or anything else from your Discord account. A cookie on submit.roboviolence.com keeps you signed in for up to 2 hours; it is needed for the form to work.</li>
+      <li><strong>What you submit</strong>: the name to credit, the map title and description, the map file, the third-party assets you list with their sources and licences, and any evidence files or links you add.</li>
+      <li><strong>The acceptance record</strong>: the time we received the submission, the version and exact text of the agreement you accepted, and fingerprints (SHA-256) of the files, so the record shows exactly what you sent and accepted.</li>
+      <li><strong>The human check</strong>: before the upload, Cloudflare Turnstile checks that a person, not a bot, sends the form. It loads from challenges.cloudflare.com only after you sign in, and Cloudflare processes your IP address and browser details for this check. We don't store your IP address with the submission.</li>
+    </ul>
+    <p>If we accept your map and publish it, the name to credit is shown with it.</p>
     <h3>On your computer</h3>
     <p>Your nickname, settings, screenshots and any game server data you create stay on your computer. The Game doesn't send them to us.</p>
   </section>
@@ -84,7 +93,8 @@
     <h2>3. Why we process it (legal basis)</h2>
     <ul>
       <li><strong>Providing the online game you ask to join</strong> (Art. 6(1)(b) GDPR): connecting you to a server, showing your nickname and chat to other players, sending you the server list.</li>
-      <li><strong>Legitimate interests</strong> (Art. 6(1)(f) GDPR): keeping the servers secure and fair, enforcing bans, finding faults (server logs), protecting the admin interface (audit log), keeping backups, and running this website.</li>
+      <li><strong>Map submissions</strong> (Art. 6(1)(b) GDPR): receiving your map and the licence you grant under the submission agreement, reviewing it and crediting you. Keeping the acceptance record after that, so we can show what licence a map was given under, is in our legitimate interest (Art. 6(1)(f) GDPR) in defending the project's right to distribute it.</li>
+      <li><strong>Legitimate interests</strong> (Art. 6(1)(f) GDPR): keeping the servers secure and fair, keeping bots and spam out of the map submission form, enforcing bans, finding faults (server logs), protecting the admin interface (audit log), keeping backups, and running this website.</li>
     </ul>
     <p>The anti-cheat checks can automatically remove a player from a match. This only affects that match; a ban is always decided by an administrator.</p>
   </section>
@@ -93,6 +103,7 @@
     <h2>4. Where the data is stored</h2>
     <p>The official game servers and the master server run on a server rented from netcup GmbH, located in Nuremberg, Germany. Nightly backups of the server data (bans, admin log, server settings) are encrypted on our server before upload and stored with Backblaze in its EU Central region (Netherlands); Backblaze can't read them. Game data is not transferred outside the European Economic Area as part of our own infrastructure.</p>
     <p>This website is hosted by GitHub, Inc. (USA), which participates in the EU-U.S. Data Privacy Framework.</p>
+    <p>Map submissions are processed by Cloudflare, Inc. (USA) on our behalf: the service runs on Cloudflare Workers, and the files and records are stored in Cloudflare R2 and D1 restricted to the EU jurisdiction. Cloudflare participates in the EU-U.S. Data Privacy Framework. Sign-in goes through Discord Inc. (USA), under Discord's own privacy policy.</p>
   </section>
 
   <section id="retention">
@@ -105,6 +116,10 @@
       <li>Public game server entries on the master server: removed 60 seconds after the server stops reporting.</li>
       <li>Admin interface log: 90 days.</li>
       <li>Backups: 14 daily and 8 weekly copies, so deleted data can remain in a backup for up to 8 more weeks.</li>
+      <li>Map submissions we accept: the map, your submission details and the acceptance record are kept for as long as the project distributes the map, and afterwards for as long as claims about its licence can be raised, because they prove the licence.</li>
+      <li>Map submissions we don't accept: deleted automatically one year after the submission.</li>
+      <li>Copies of the submission database, for recovery: 35 days.</li>
+      <li>The sign-in cookie: 2 hours.</li>
     </ul>
   </section>
 
@@ -114,7 +129,7 @@
     <ul>
       <li><strong>Other players</strong> on the same server see your nickname, chat messages, team and score.</li>
       <li><strong>Anyone who runs a Robo Violence 2 server</strong>, or any program that connects to the master server, can see the nicknames and IP addresses of a public server's last 50 players; the feature exists to issue shared bans (see section 2, Bans).</li>
-      <li><strong>Our hosting providers</strong>, acting on our behalf: netcup GmbH (game and master servers), Backblaze (encrypted backups), GitHub (website).</li>
+      <li><strong>Our hosting providers</strong>, acting on our behalf: netcup GmbH (game and master servers), Backblaze (encrypted backups), GitHub (website), Cloudflare (map submissions).</li>
     </ul>
     <p>Anyone can run their own Robo Violence 2 server. If you join a server that is not run by us, its operator is responsible for the data it processes, and this policy does not cover it.</p>
     <p>The Robo Violence 2 Discord server is run on Discord, under Discord's own privacy policy. We only link to it.</p>
@@ -136,13 +151,13 @@
       <li>receive your data in a portable format (Art. 20),</li>
       <li>object to processing based on legitimate interests (Art. 21).</li>
     </ul>
-    <p>Because we have no accounts, we can only find your data by the IP address or nickname you used. To exercise a right, write to the contact address in section 1 with that information.</p>
+    <p>Because we have no accounts, we can only find your data by the IP address or nickname you used, or for map submissions by your Discord username or the submission ID. To exercise a right, write to the contact address in section 1 with that information. We can correct the name we credit you with, but we don't change or delete the acceptance record of a map we distribute while we may need it to show the licence (Art. 17(3)(e) GDPR).</p>
     <p>You can also lodge a complaint with a data protection supervisory authority, in particular in the EU country where you live, or with the Polish authority, the President of the Personal Data Protection Office (UODO, <a href="https://uodo.gov.pl">uodo.gov.pl</a>).</p>
   </section>
 
   <section id="children">
     <h2>9. Children</h2>
-    <p>The Game does not ask for your age or any identifying information. It is not directed at children under 16. If you are a parent and believe your child's data is stored in a ban or log, contact us and we will delete it.</p>
+    <p>The Game does not ask for your age or any identifying information. It is not directed at children under 16, and map submissions are for people aged 16 or older. If you are a parent and believe your child's data is stored in a ban or log, contact us and we will delete it.</p>
   </section>
 
   <section id="changes">
