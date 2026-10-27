@@ -46,6 +46,7 @@
       <h1>Your own game server</h1>
       <p>The Windows and Linux downloads include the game server (<code>bv2dedicated</code>). On macOS it is in <code>roboviolence2-macos-arm64.zip</code> on the <a href="https://github.com/Hub-Tansky/RoboViolence2/releases">releases page</a>, not in the <code>.dmg</code>. For an always-on host, use the Docker image.</p>
       <p>A new server shows up in the in-game server list by itself.</p>
+      <p>For a quick game with friends you need no separate server: the <strong>Host</strong> tab in the game runs one inside the game on every OS, including the macOS app from the <code>.dmg</code>. It stops when you leave the match, and your frame rate is the server's tick. Players outside your network still need the port below open. Use the standalone server for anything that should stay up.</p>
 
       <h2 id="ports">Ports</h2>
       <p>Open inbound <strong>TCP 3333</strong>. A team deathmatch server (launch script <code>TDM</code>) uses <strong>TCP 3334</strong>. All game traffic is TCP.</p>
