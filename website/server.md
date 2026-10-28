@@ -1,10 +1,12 @@
 # Your own game server
 
-The Windows and Linux downloads include the game server (`bv2dedicated`). On macOS it is in `roboviolence2-macos-arm64.zip` on the [releases page](https://github.com/Hub-Tansky/RoboViolence2/releases), not in the `.dmg`. For an always-on host, use the Docker image.
+The primary server is located in Germany, so latency/ping in places like the USA or Australia will be poor. However, anyone may host a server for their own region. A new server shows up in the in-game server list by itself.
 
-A new server shows up in the in-game server list by itself.
+**Status: alpha.** For the time being, official Robo Violence 2 servers are largely unusable. The official CTF and TDM servers offer only a single placeholder map. We cannot share the original maps from BaboViolent 2 without permission from the creators. On Discord we are working on new maps.
 
-For a quick game with friends you need no separate server: the **Host** tab in the game runs one inside the game on every OS, including the macOS app from the `.dmg`. It stops when you leave the match, and your frame rate is the server's tick. Players outside your network still need the port below open. Use the standalone server for anything that should stay up.
+For a quick game with friends you need no separate server: the **Host** tab in the game runs one inside the game on every OS. It stops when you leave the match, and your frame rate is the server's bottleneck. Players outside your network will need the ports listed below open.
+
+Use the standalone server for anything that should stay up. The Windows and Linux downloads include the game server (`bv2dedicated`). On macOS it is in `roboviolence2-macos-arm64.zip` on the [releases page](https://github.com/Hub-Tansky/RoboViolence2/releases), not in the `.dmg`. For an always-on host we recommend using the Docker image.
 
 ## Ports
 
