@@ -2,7 +2,7 @@ Free and open source · Alpha
 
 # Robo Violence 2
 
-Free top-down multiplayer arena shooter for Windows, macOS and Linux. An unofficial revival of BaboViolent 2.
+Free top-down multiplayer arena shooter for Windows, macOS and Linux. We continue the story of BaboViolent 2 on a modern base.
 
 [Download](https://roboviolence.com/install.md#downloads) [Install guide and other platforms](https://roboviolence.com/install.md)
 
@@ -16,15 +16,15 @@ Deathmatch, team deathmatch and capture the flag.
 
 ### Windows, macOS and Linux
 
-One game on all three systems, and everyone plays on the same servers.
+One game, three systems, and everyone plays on the same servers.
 
 ### Servers ready to join
 
-Our capture the flag and team deathmatch servers are in the in-game server list. You can also [run your own](https://roboviolence.com/server.md).
+Our capture the flag and team deathmatch servers are in the in-game server list. You can also [run your own server](https://roboviolence.com/server.md).
 
 ### Free for good
 
-No accounts, ads, analytics or tracking. The code is GPLv3 on GitHub.
+No accounts, ads, analytics or tracking. The code is open source and available on [GitHub](https://github.com/Hub-Tansky/RoboViolence2).
 
 ## Playing in three steps
 
@@ -34,6 +34,6 @@ No accounts, ads, analytics or tracking. The code is GPLv3 on GitHub.
 
 ## Find players and follow releases
 
-Talk to other players, report bugs and get news about new versions on Discord. Code and issues live on GitHub.
+Talk to other players, report bugs and get news about new versions on Discord.
 
-[Join Discord](https://discord.gg/gRehxx43z) [GitHub](https://github.com/Hub-Tansky/RoboViolence2)
+[Join Discord](https://discord.gg/gRehxx43z)
