@@ -8,26 +8,24 @@ const RELEASES_API = `https://api.github.com/repos/${REPO}/releases?per_page=10`
 // The Discord invite (never expires, no use limit). Empty: the menu entry says "soon".
 export const DISCORD_INVITE = 'https://discord.gg/gRehxx43z';
 
-// The installer each OS gets from the main button; release asset names come from build.yml (release job).
+// The file behind each download button; release asset names come from build.yml (release job).
 export const PLATFORMS = {
-  windows: { label: 'Windows', suffix: '-setup.exe' },
-  macos: { label: 'macOS', suffix: '.dmg', note: 'Apple Silicon (M1 or newer)' },
-  linux: { label: 'Linux', suffix: '-linux-x64.tar.gz' },
-  deb: { label: 'Linux', suffix: '-linux-x64.deb', note: 'Debian package for Ubuntu, Debian and related systems' },
+  windows: { label: 'Download for Windows', suffix: '-setup.exe' },
+  macos: { label: 'Download for macOS', suffix: '.dmg', note: 'Apple Silicon (M1 or newer)' },
+  deb: { label: '.deb (Ubuntu, Mint, Debian…)', suffix: '-linux-x64.deb' },
+  tarGz: { label: '.tar.gz (other)', suffix: '-linux-x64.tar.gz' },
 };
 
-// Debian-based distributions whose visitors get the .deb (Kubuntu, Xubuntu and Lubuntu match "Ubuntu"). Browsers
-// rarely name the distribution: Firefox packaged by some distributions does ("X11; Ubuntu; Linux x86_64"), Chrome and
-// most others say only "Linux". Every Linux the user agent doesn't name gets the tar.gz.
-const DEB_DISTROS = /Ubuntu|Mint|Debian|Pop!?_?OS|MX[ _-]?Linux|Kali|Zorin|Tails|Deepin|Devuan|PureOS/i;
+// The buttons each OS gets, in order. Browsers don't tell the Linux distribution, so Linux gets both packages.
+export const BUTTONS = { windows: ['windows'], macos: ['macos'], linux: ['deb', 'tarGz'] };
 
-// 'windows', 'macos', 'deb' (a Debian-based Linux), 'linux' or null (phones, Android tablets, unknown). iPadOS Safari reports a Mac and gets the .dmg.
+// 'windows', 'macos', 'linux' or null (phones, Android tablets, unknown). iPadOS Safari reports a Mac and gets the .dmg.
 export function detectOS(userAgent, platform = '') {
   const ua = `${userAgent} ${platform}`;
   if (/Android|iPhone|iPad|iPod|CrOS/i.test(ua)) return null;
   if (/Windows|Win64|Win32/i.test(ua)) return 'windows';
   if (/Mac/i.test(ua)) return 'macos';
-  if (/Linux|X11/i.test(ua)) return DEB_DISTROS.test(ua) ? 'deb' : 'linux';
+  if (/Linux|X11/i.test(ua)) return 'linux';
   return null;
 }
 
@@ -36,8 +34,8 @@ export function newestRelease(releases) {
   return releases.find((r) => !r.draft) ?? null;
 }
 
-export function pickAsset(release, os) {
-  const platform = PLATFORMS[os];
+export function pickAsset(release, file) {
+  const platform = PLATFORMS[file];
   if (!release || !platform) return null;
   return release.assets.find((a) => a.name.endsWith(platform.suffix)) ?? null;
 }
@@ -49,25 +47,36 @@ function formatSize(bytes) {
 // The install guide's file list, where phones and unknown systems are sent.
 export const DOWNLOADS = 'install.html#downloads';
 
-// What the download button offers: the installer for this OS, the releases page, or the install guide's list.
+// What one download button offers for a file of PLATFORMS: the file of the newest release, or the releases page.
 // The note (version, file, size) is shown on the install guide only.
-export function downloadOffer(release, os) {
-  const platform = PLATFORMS[os];
-  if (!platform) return { label: 'Download', href: DOWNLOADS, note: 'Windows, macOS and Linux. Pick a file below.' };
-  const label = `Download for ${platform.label}`;
-  const asset = pickAsset(release, os);
-  if (!asset) return { label, href: RELEASES_PAGE, note: 'Opens the GitHub releases page.' };
+export function downloadOffer(release, file) {
+  const platform = PLATFORMS[file];
+  const asset = pickAsset(release, file);
+  if (!asset) return { label: platform.label, href: RELEASES_PAGE, note: 'Opens the GitHub releases page.' };
   const kind = release.prerelease ? 'alpha' : 'release';
   const note = [`${release.tag_name} ${kind}, ${asset.name}, ${formatSize(asset.size)}`, platform.note].filter(Boolean).join('. ');
-  return { label, href: asset.browser_download_url, note };
+  return { label: platform.label, href: asset.browser_download_url, note };
 }
 
-function setUpDownload(button, release) {
-  const offer = downloadOffer(release, detectOS(navigator.userAgent, navigator.userAgentData?.platform));
-  button.querySelector('[data-label]').textContent = offer.label;
-  button.href = offer.href;
+// The download buttons for this OS; phones and unknown systems get one button to the install guide's list.
+export function downloadOffers(release, os) {
+  const files = BUTTONS[os];
+  if (!files) return [{ label: 'Download', href: DOWNLOADS, note: 'Windows, macOS and Linux. Pick a file below.' }];
+  return files.map((file) => downloadOffer(release, file));
+}
+
+// The page has one [data-download] link per possible button; links without an offer stay hidden.
+function setUpDownload(release) {
+  const offers = downloadOffers(release, detectOS(navigator.userAgent, navigator.userAgentData?.platform));
+  document.querySelectorAll('[data-download]').forEach((button, i) => {
+    const offer = offers[i];
+    button.hidden = !offer;
+    if (!offer) return;
+    button.querySelector('[data-label]').textContent = offer.label;
+    button.href = offer.href;
+  });
   const note = document.getElementById('download-note');
-  if (note) note.textContent = offer.note;
+  if (note) note.textContent = [...new Set(offers.map((o) => o.note))].join('. ');
 }
 
 function fillDownloadList(release) {
@@ -153,7 +162,7 @@ async function main() {
   } catch {
     // Offline or rate-limited: the links keep pointing at the releases page.
   }
-  setUpDownload(button, release);
+  setUpDownload(release);
   fillDownloadList(release);
 }
 

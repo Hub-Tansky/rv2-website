@@ -33,7 +33,7 @@ What we do, in one or two sentences.
 | ADR | Decision | Status |
 |---|---|---|
 | [0001](0001-website-in-its-own-repository.md) | The website lives in its own repository; tests read the game's release file names from its `build.yml` | Accepted |
-| [0002](0002-linux-deb-from-user-agent.md) | The download button offers the .deb to Debian-based Linux the user agent names, the tar.gz otherwise | Accepted |
+| [0002](0002-two-linux-download-buttons.md) | Linux visitors get two download buttons, .deb and tar.gz | Accepted |
 | [0029](0029-static-website-on-github-pages.md) | The website is static HTML on GitHub Pages; downloads come from the GitHub releases API | Accepted, amended by 0035, 0001, 0002 |
 | [0035](0035-website-tailwind-install-page-agent-files.md) | The website uses Tailwind from its CDN, has a separate install guide and publishes files for AI agents | Accepted, amended by 0001 |
 

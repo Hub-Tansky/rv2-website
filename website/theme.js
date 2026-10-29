@@ -65,6 +65,8 @@
 
         addBase({
           html: { scrollBehavior: 'smooth', colorScheme: 'dark' },
+          // The component classes set display, which would otherwise show a hidden button
+          '[hidden]': { display: 'none !important' },
           body: { minHeight: '100vh', background: c.ink, color: c.fg, fontSize: '17px', lineHeight: '1.625', WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale' },
           '[id]': { scrollMarginTop: '5rem' },
           code: { overflowWrap: 'anywhere', background: c.panel, border: `1px solid ${c.line}`, borderRadius: '4px', padding: '0 4px', fontSize: '0.9em' },

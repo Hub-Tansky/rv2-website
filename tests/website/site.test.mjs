@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import test from 'node:test';
 import { pages as htmlPages, toMarkdown } from '../../tools/website-markdown.mjs';
-import { DISCORD_INVITE, DOWNLOADS, PLATFORMS, RELEASES_PAGE, detectOS, downloadOffer, mailAddress, movedSection, newestRelease, pickAsset } from '../../website/site.js';
+import { BUTTONS, DISCORD_INVITE, DOWNLOADS, PLATFORMS, RELEASES_PAGE, detectOS, downloadOffer, downloadOffers, mailAddress, movedSection, newestRelease, pickAsset } from '../../website/site.js';
 
 const root = new URL('../../', import.meta.url);
 const read = (path) => readFileSync(new URL(path, root), 'utf8');
@@ -33,8 +33,9 @@ test('the release job publishes exactly one installer per OS', () => {
   }
   assert.equal(pickAsset(release, 'windows').name, 'roboviolence2-win-x64-msvc-setup.exe');
   assert.equal(pickAsset(release, 'macos').name, 'roboviolence2-macos-arm64.dmg');
-  assert.equal(pickAsset(release, 'linux').name, 'roboviolence2-linux-x64.tar.gz');
   assert.equal(pickAsset(release, 'deb').name, 'roboviolence2-linux-x64.deb');
+  assert.equal(pickAsset(release, 'tarGz').name, 'roboviolence2-linux-x64.tar.gz');
+  for (const files of Object.values(BUTTONS)) for (const file of files) assert.ok(PLATFORMS[file], file);
 });
 
 test('detectOS maps desktop browsers and leaves phones to the list', () => {
@@ -42,18 +43,28 @@ test('detectOS maps desktop browsers and leaves phones to the list', () => {
   assert.equal(detectOS('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Safari/605.1.15'), 'macos');
   assert.equal(detectOS('Mozilla/5.0 (X11; Linux x86_64; rv:131.0) Firefox/131.0'), 'linux');
   assert.equal(detectOS('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/130.0', 'Linux'), 'linux');
-  assert.equal(detectOS('Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:131.0) Firefox/131.0'), 'linux');
-  assert.equal(detectOS('Mozilla/5.0 (X11; Arch Linux; Linux x86_64; rv:131.0) Firefox/131.0'), 'linux');
+  assert.equal(detectOS('Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:131.0) Firefox/131.0'), 'linux');
   assert.equal(detectOS('Mozilla/5.0 (Linux; Android 14; Pixel 8) Chrome/130.0 Mobile'), null);
   assert.equal(detectOS('Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) Safari/604.1'), null);
 });
 
-test('detectOS sends the listed Debian-based distributions to the .deb', () => {
-  for (const distro of ['Ubuntu', 'Linux Mint', 'Debian', 'Pop!_OS', 'MX Linux', 'Kali', 'Zorin OS', 'Kubuntu', 'Xubuntu', 'Lubuntu', 'Tails', 'Deepin', 'Devuan', 'PureOS']) {
-    assert.equal(detectOS(`Mozilla/5.0 (X11; ${distro}; Linux x86_64; rv:131.0) Firefox/131.0`), 'deb', distro);
+test('Linux gets two buttons: the .deb first, then the tar.gz', () => {
+  assert.deepEqual(
+    downloadOffers(release, 'linux').map(({ label, href }) => [label, href]),
+    [
+      ['.deb (Ubuntu, Mint, Debian…)', 'https://example.invalid/roboviolence2-linux-x64.deb'],
+      ['.tar.gz (other)', 'https://example.invalid/roboviolence2-linux-x64.tar.gz'],
+    ],
+  );
+  assert.equal(downloadOffers(release, 'windows').length, 1);
+  assert.equal(downloadOffers(null, 'linux')[1].href, RELEASES_PAGE);
+});
+
+test('the pages with the download button have a link for every button an OS gets', () => {
+  const most = Math.max(...Object.values(BUTTONS).map((files) => files.length));
+  for (const page of ['index.html', 'install.html']) {
+    assert.equal(read(`website/${page}`).match(/<a [^>]*data-download[^>]*>/g)?.length, most, page);
   }
-  assert.equal(downloadOffer(release, 'deb').href, 'https://example.invalid/roboviolence2-linux-x64.deb');
-  assert.equal(downloadOffer(release, 'deb').label, 'Download for Linux');
 });
 
 test('newestRelease takes the first non-draft release, pre-releases included', () => {
@@ -70,9 +81,9 @@ test('downloadOffer: installer, releases page fallback, or the install guide lis
   });
   assert.equal(downloadOffer(release, 'windows').note, 'v0.0.2 alpha, roboviolence2-win-x64-msvc-setup.exe, 1.0 MB');
   // No answer from the API (offline, rate limit) or no matching asset
-  assert.equal(downloadOffer(null, 'linux').href, RELEASES_PAGE);
+  assert.equal(downloadOffer(null, 'tarGz').href, RELEASES_PAGE);
   assert.equal(downloadOffer({ ...release, assets: [] }, 'windows').href, RELEASES_PAGE);
-  assert.equal(downloadOffer(release, null).href, DOWNLOADS);
+  assert.deepEqual(downloadOffers(release, null).map((o) => o.href), [DOWNLOADS]);
 });
 
 test('the install guide names the files the release job publishes', () => {
