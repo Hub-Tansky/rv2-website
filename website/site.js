@@ -13,15 +13,21 @@ export const PLATFORMS = {
   windows: { label: 'Windows', suffix: '-setup.exe' },
   macos: { label: 'macOS', suffix: '.dmg', note: 'Apple Silicon (M1 or newer)' },
   linux: { label: 'Linux', suffix: '-linux-x64.tar.gz' },
+  deb: { label: 'Linux', suffix: '-linux-x64.deb', note: 'Debian package for Ubuntu, Debian and related systems' },
 };
 
-// 'windows', 'macos', 'linux' or null (phones, Android tablets, unknown). iPadOS Safari reports a Mac and gets the .dmg.
+// Debian-based distributions whose visitors get the .deb (Kubuntu, Xubuntu and Lubuntu match "Ubuntu"). Browsers
+// rarely name the distribution: Firefox packaged by some distributions does ("X11; Ubuntu; Linux x86_64"), Chrome and
+// most others say only "Linux". Every Linux the user agent doesn't name gets the tar.gz.
+const DEB_DISTROS = /Ubuntu|Mint|Debian|Pop!?_?OS|MX[ _-]?Linux|Kali|Zorin|Tails|Deepin|Devuan|PureOS/i;
+
+// 'windows', 'macos', 'deb' (a Debian-based Linux), 'linux' or null (phones, Android tablets, unknown). iPadOS Safari reports a Mac and gets the .dmg.
 export function detectOS(userAgent, platform = '') {
   const ua = `${userAgent} ${platform}`;
   if (/Android|iPhone|iPad|iPod|CrOS/i.test(ua)) return null;
   if (/Windows|Win64|Win32/i.test(ua)) return 'windows';
   if (/Mac/i.test(ua)) return 'macos';
-  if (/Linux|X11/i.test(ua)) return 'linux';
+  if (/Linux|X11/i.test(ua)) return DEB_DISTROS.test(ua) ? 'deb' : 'linux';
   return null;
 }
 

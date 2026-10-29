@@ -164,7 +164,7 @@
           },
           '.card': { background: c.panel, border: `1px solid ${c.line}`, borderRadius: '16px', padding: '1.5rem', boxShadow: '0 18px 40px -20px rgba(0, 0, 0, 0.7)' },
           '.notice': { borderLeft: `4px solid ${c.red}`, background: c.panel, padding: '14px 18px', borderRadius: '0 10px 10px 0' },
-          '.prose-rv': { lineHeight: '1.7', maxWidth: '72ch' },
+          '.prose-rv': { lineHeight: '1.7' },
           '.prose-rv h1': { fontSize: 'clamp(2rem, 5vw, 3rem)', lineHeight: '1.1', fontWeight: '800', letterSpacing: '-0.02em', margin: '0 0 1.25rem' },
           '.prose-rv h2': { fontSize: '1.6rem', lineHeight: '1.25', fontWeight: '700', letterSpacing: '-0.01em', margin: '2.75rem 0 0.75rem' },
           '.prose-rv h3': { fontSize: '1.2rem', fontWeight: '700', margin: '1.75rem 0 0.5rem' },

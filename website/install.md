@@ -10,12 +10,6 @@
 2. Unzip it into your Downloads, Desktop or Documents folder. Robo Violence 2 finds it there on start.
 3. Otherwise, the game asks on first start: choose `BaboViolent2-master/BaboViolent2/Content/main/` or any folder above it.
 
-## Requirements
-
-- Windows 10 22H2 or later (x64).
-- macOS 12 or later with Apple Silicon (M1 or newer).
-- Linux x64 with glibc 2.39 or newer: Linux Mint 22, Ubuntu 24.04, Debian 13 or later.
-
 ## Downloads
 
 - [All files on the GitHub releases page](https://github.com/Hub-Tansky/RoboViolence2/releases)
@@ -55,3 +49,9 @@ cd roboviolence2-linux-x64
 ```
 
 More detail, troubleshooting and building from source: [build guides](https://github.com/Hub-Tansky/RoboViolence2/tree/main/docs/build).
+
+## Minimal system requirements
+
+- Windows 10 22H2 or later (x64).
+- macOS 12 or later with Apple Silicon (M1 or newer).
+- Linux x64 with glibc 2.39 or newer: Linux Mint 22, Ubuntu 24.04, Debian 13 or later.

@@ -34,15 +34,26 @@ test('the release job publishes exactly one installer per OS', () => {
   assert.equal(pickAsset(release, 'windows').name, 'roboviolence2-win-x64-msvc-setup.exe');
   assert.equal(pickAsset(release, 'macos').name, 'roboviolence2-macos-arm64.dmg');
   assert.equal(pickAsset(release, 'linux').name, 'roboviolence2-linux-x64.tar.gz');
+  assert.equal(pickAsset(release, 'deb').name, 'roboviolence2-linux-x64.deb');
 });
 
 test('detectOS maps desktop browsers and leaves phones to the list', () => {
   assert.equal(detectOS('Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/130.0'), 'windows');
   assert.equal(detectOS('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Safari/605.1.15'), 'macos');
   assert.equal(detectOS('Mozilla/5.0 (X11; Linux x86_64; rv:131.0) Firefox/131.0'), 'linux');
-  assert.equal(detectOS('Mozilla/5.0 (X11; Ubuntu; Linux x86_64) Chrome/130.0', 'Linux'), 'linux');
+  assert.equal(detectOS('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/130.0', 'Linux'), 'linux');
+  assert.equal(detectOS('Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:131.0) Firefox/131.0'), 'linux');
+  assert.equal(detectOS('Mozilla/5.0 (X11; Arch Linux; Linux x86_64; rv:131.0) Firefox/131.0'), 'linux');
   assert.equal(detectOS('Mozilla/5.0 (Linux; Android 14; Pixel 8) Chrome/130.0 Mobile'), null);
   assert.equal(detectOS('Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) Safari/604.1'), null);
+});
+
+test('detectOS sends the listed Debian-based distributions to the .deb', () => {
+  for (const distro of ['Ubuntu', 'Linux Mint', 'Debian', 'Pop!_OS', 'MX Linux', 'Kali', 'Zorin OS', 'Kubuntu', 'Xubuntu', 'Lubuntu', 'Tails', 'Deepin', 'Devuan', 'PureOS']) {
+    assert.equal(detectOS(`Mozilla/5.0 (X11; ${distro}; Linux x86_64; rv:131.0) Firefox/131.0`), 'deb', distro);
+  }
+  assert.equal(downloadOffer(release, 'deb').href, 'https://example.invalid/roboviolence2-linux-x64.deb');
+  assert.equal(downloadOffer(release, 'deb').label, 'Download for Linux');
 });
 
 test('newestRelease takes the first non-draft release, pre-releases included', () => {
@@ -99,6 +110,15 @@ test('every page has the same menu and footer', () => {
   };
   assert.ok(chrome('index.html').includes('<nav '), 'index.html has the menu');
   for (const page of pages) assert.equal(chrome(page), chrome('index.html'), page);
+});
+
+test('every Discord link opens in a new tab, and the menu offers support there', () => {
+  for (const page of pages) {
+    const links = read(`website/${page}`).match(/<a [^>]*data-discord[^>]*>/g) ?? [];
+    assert.ok(links.length > 0, page);
+    for (const link of links) assert.ok(link.includes('target="_blank" rel="noopener"'), `${page}: ${link}`);
+  }
+  assert.ok(read('website/index.html').includes('rel="noopener">Get Support on Discord</a>'));
 });
 
 test('the privacy contact is assembled in the browser, never written in the page', () => {
