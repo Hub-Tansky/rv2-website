@@ -8,7 +8,7 @@ We continue the story of BaboViolent 2 on a modern base, with one codebase for W
 
 ## Credits
 
-Robo Violence 2 is a fork of **BaboViolent 2** built on its GPLv3 source release: [github.com/Daivuk/BaboViolent2](https://github.com/Daivuk/BaboViolent2). It is not affiliated with or endorsed by the original authors. Big thanks to authors and to everyone who made BaboViolent 2 possible.
+Robo Violence 2 is a fork of **BaboViolent 2** built on its GPLv3 source release: [github.com/Daivuk/BaboViolent2](https://github.com/Daivuk/BaboViolent2). Big thanks to authors and to everyone who made BaboViolent 2 possible.
 
 The GPL covers the code only. The original assets (maps, models, textures, sounds, music, fonts) and the name "BaboViolent 2" are not part of this project and are not redistributed here.
 
