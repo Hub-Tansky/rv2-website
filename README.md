@@ -19,7 +19,7 @@ The static site at https://roboviolence.com, deployed to GitHub Pages from `main
 | `website/about.html` | What the game is; credits to BaboViolent 2 |
 | `website/privacy.html` | Privacy policy (GDPR): data processed by the game, servers and website, legal basis, hosting, retention, rights (RoboViolence2 ADR 0034) |
 | `website/server.html` | Hosting your own game server (summary of the game's `docs/ops/runbook.md`) |
-| `website/submit-map.html` | Map submission form: Discord sign-in, `.bvm` upload, third-party asset disclosures, agreement acceptance, receipt (ADR 0002) |
+| `website/submit-map.html` | Map submission form: Discord sign-in, `.bvm` upload, third-party asset disclosures, agreement acceptance, receipt (ADR 0003) |
 | `website/submit-map.js` | Drives the form against the submission service at submit.roboviolence.com; loads Turnstile only after sign-in |
 | `website/site.js` | Download button and list from the GitHub releases API, Discord invite constant, mobile menu, icons, `/#install` redirect, contact address assembled from `data-mail` attributes |
 | `website/theme.js` | Tailwind Play CDN theme for every page: palette, layout steps, page chrome and shared component classes (ADR 0035) |
@@ -28,9 +28,9 @@ The static site at https://roboviolence.com, deployed to GitHub Pages from `main
 | `website/sitemap.xml` | Every page's canonical address (the tests check it) |
 | `website/llms.txt` | Summary and Markdown page links for AI agents (llmstxt.org) |
 | `website/img/` | `hero.webp` placeholder hero, `og.png` link preview (1200x630), `rv2-icon.png` app icon v2 (menu logo, Apple touch icon, linked from elsewhere: keep the URL), `favicon.svg` |
-| `worker/` | The map submission service, a Cloudflare Worker with R2 and D1 (ADR 0002): `src/` code, `migrations/` D1 schema, `test/` tests, `scripts/` one-time setup and agreement publishing |
+| `worker/` | The map submission service, a Cloudflare Worker with R2 and D1 (ADR 0003): `src/` code, `migrations/` D1 schema, `test/` tests, `scripts/` one-time setup and agreement publishing |
 | `docs/ops/map-submissions.md` | Setting up, reviewing and operating map submissions |
-| `.github/workflows/worker.yml` | Tests the Worker on PRs; applies migrations and deploys it from `main` (ADR 0002) |
+| `.github/workflows/worker.yml` | Tests the Worker on PRs; applies migrations and deploys it from `main` (ADR 0003) |
 | `tools/website-markdown.mjs` | Writes `website/<page>.md` from each page's `<main>` |
 | `tests/website/site.test.mjs` | Installer per OS against the asset names in the game's `build.yml`, OS detection, newest release incl. pre-releases, button offer and fallback, shared chrome, privacy contact, CDN and canonical tags, sitemap, robots.txt, Markdown copies, JSON-LD |
 | `.github/workflows/pages.yml` | Tests on PRs, pushes and daily; deploys `website/` to GitHub Pages from `main` (ADR 0029, 0001) |

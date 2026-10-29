@@ -34,7 +34,7 @@
     <div class="menu" id="menu">
       <a class="nav-link" href="install.html">Download</a>
       <a class="nav-link" href="about.html">About</a>
-      <a class="nav-link" data-discord href="#">Discord server</a>
+      <a class="nav-link" data-discord href="#" target="_blank" rel="noopener">Get Support on Discord</a>
       <a class="nav-link" href="server.html" aria-current="page">Your own game server</a>
     </div>
   </nav>
@@ -44,8 +44,10 @@
   <div class="page-body site-container">
     <div class="prose-rv">
       <h1>Your own game server</h1>
-      <p>The Windows and Linux downloads include the game server (<code>bv2dedicated</code>). On macOS it is in <code>roboviolence2-macos-arm64.zip</code> on the <a href="https://github.com/Hub-Tansky/RoboViolence2/releases">releases page</a>, not in the <code>.dmg</code>. For an always-on host, use the Docker image.</p>
-      <p>A new server shows up in the in-game server list by itself.</p>
+      <p>The primary server is located in Germany, so latency/ping in places like the USA or Australia will be poor. However, anyone may host a server for their own region. A new server shows up in the in-game server list by itself.</p>
+      <p class="notice"><strong>Status: alpha.</strong> For the time being, official Robo Violence 2 servers are largely unusable. The official CTF and TDM servers offer only a single placeholder map. We cannot share the original maps from BaboViolent 2 without permission from the creators. On Discord we are working on new maps.</p>
+      <p>For a quick game with friends you need no separate server: the <strong>Host</strong> tab in the game runs one inside the game on every OS. It stops when you leave the match, and your frame rate is the server's bottleneck. Players outside your network will need the ports listed below open.</p>
+      <p>Use the standalone server for anything that should stay up. The Windows and Linux downloads include the game server (<code>bv2dedicated</code>). On macOS it is in <code>roboviolence2-macos-arm64.zip</code> on the <a href="https://github.com/Hub-Tansky/RoboViolence2/releases">releases page</a>, not in the <code>.dmg</code>. For an always-on host we recommend using the Docker image.</p>
 
       <h2 id="ports">Ports</h2>
       <p>Open inbound <strong>TCP 3333</strong>. A team deathmatch server (launch script <code>TDM</code>) uses <strong>TCP 3334</strong>. All game traffic is TCP.</p>

@@ -1,6 +1,6 @@
 # Map submissions: setup and operation
 
-The form is `website/submit-map.html` (https://roboviolence.com/submit-map.html). The service behind it is the Cloudflare Worker in `worker/` at https://submit.roboviolence.com ([ADR 0002](../decisions/0002-map-submissions-on-a-cloudflare-worker.md)). Until an agreement version is published (step 7), the page says "Map submissions are not open yet".
+The form is `website/submit-map.html` (https://roboviolence.com/submit-map.html). The service behind it is the Cloudflare Worker in `worker/` at https://submit.roboviolence.com ([ADR 0003](../decisions/0003-map-submissions-on-a-cloudflare-worker.md)). Until an agreement version is published (step 7), the page says "Map submissions are not open yet".
 
 ## One-time setup (about 30 minutes)
 

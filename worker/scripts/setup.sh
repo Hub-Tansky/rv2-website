@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-time creation of the map submission service's Cloudflare resources (ADR 0002, docs/ops/map-submissions.md).
+# One-time creation of the map submission service's Cloudflare resources (ADR 0003, docs/ops/map-submissions.md).
 # Run from the repository root on a computer where `npx wrangler login` has been done. Safe to re-run: steps that
 # already happened fail with "already exists" and the script goes on.
 set -uo pipefail

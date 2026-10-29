@@ -1,4 +1,4 @@
-// The append-only event log of map submissions (D1 table `events`, ADR 0002). Each submission's events form a
+// The append-only event log of map submissions (D1 table `events`, ADR 0003). Each submission's events form a
 // SHA-256 chain that starts from the hash of its stored record, so an edited or removed event, or a record that no
 // longer matches its events, breaks the chain that /admin/verify walks.
 import { canonicalJson, sha256 } from './util.js';

@@ -1,5 +1,5 @@
 // Nightly: deletes submissions that were rejected and are older than the retention period (privacy policy, "Map
-// submissions"; ADR 0002). Accepted maps, including ones taken down later, keep their records for the licence history.
+// submissions"; ADR 0003). Accepted maps, including ones taken down later, keep their records for the licence history.
 // The bucket lock on submissions/ refuses deletes until the files are a year old, so a refused delete is retried
 // the next night, and the database rows go only once the files are gone.
 

@@ -1,5 +1,5 @@
 // Sign-in for map submitters (Discord OAuth2, `identify` scope only: user ID and names, no email) and the
-// signed session cookie; Cloudflare Access check for the owner's review pages (ADR 0002).
+// signed session cookie; Cloudflare Access check for the owner's review pages (ADR 0003).
 import { base64url, cookies, fromBase64url, randomHex } from './util.js';
 
 const SESSION_COOKIE = 'rv2_session';

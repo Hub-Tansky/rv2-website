@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Publishes a map submission agreement version (ADR 0002): uploads the text to the bucket under its SHA-256 and
+# Publishes a map submission agreement version (ADR 0003): uploads the text to the bucket under its SHA-256 and
 # points worker/wrangler.toml at it. The text itself never goes into this repository.
 # Usage: worker/scripts/publish-agreement.sh <agreement.txt> <version label, e.g. 1.0>
 # Then commit worker/wrangler.toml; the merge to main deploys it and the form opens with this version.

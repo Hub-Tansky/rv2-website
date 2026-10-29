@@ -8,13 +8,7 @@
 
 1. Download the original game: [BaboViolent2-master.zip](https://github.com/Daivuk/BaboViolent2/archive/refs/heads/master.zip).
 2. Unzip it into your Downloads, Desktop or Documents folder. Robo Violence 2 finds it there on start.
-3. Elsewhere, the game asks on first start: choose `BaboViolent2-master/BaboViolent2/Content/main/` or any folder above it.
-
-## Requirements
-
-- Windows 10 22H2 or later (x64) with an OpenGL 2.1 GPU driver.
-- macOS 12 or later, Apple Silicon (M1 or newer).
-- Linux x64 with glibc 2.39 or newer: Ubuntu 24.04, Linux Mint 22, Debian 13 or later.
+3. Otherwise, the game asks on first start: choose `BaboViolent2-master/BaboViolent2/Content/main/` or any folder above it.
 
 ## Downloads
 
@@ -22,13 +16,9 @@
 
 ### Windows
 
-Run `roboviolence2-win-x64-msvc-setup.exe`. It installs for your user only, without admin rights, and adds a Start-menu entry.
+Run `roboviolence2-win-x64-msvc-setup.exe`. It installs for your user only and adds a Start-menu entry.
 
-Project uses the [SignPath Foundation](https://signpath.org/) for code signing.
-
-Privacy: the game sends nothing to other networked systems unless you ask it to (the server list, joining a server). The installer links the [privacy policy](https://roboviolence.com/privacy.md) and can turn the public server list off.
-
-Until signed releases ship, the installer is unsigned. On "Windows protected your PC" (SmartScreen) choose **More info → Run anyway**.
+Until we ship the first release signed with a certificate, the installer is unsigned. On "Windows protected your PC" (SmartScreen) choose **More info → Run anyway**.
 
 ### macOS
 
@@ -50,13 +40,7 @@ Ubuntu, Mint, Debian: install `roboviolence2-linux-x64.deb`, then start Robo Vio
 sudo apt install ./roboviolence2-linux-x64.deb
 ```
 
-Other distributions, or without installing: get the GL libraries (Ubuntu, Mint, Debian names):
-
-```
-sudo apt install libgl1 libglu1-mesa
-```
-
-Unpack and start:
+Other distributions: unpack the `.tar.gz` and start:
 
 ```
 tar -xzf roboviolence2-linux-x64.tar.gz
@@ -65,3 +49,9 @@ cd roboviolence2-linux-x64
 ```
 
 More detail, troubleshooting and building from source: [build guides](https://github.com/Hub-Tansky/RoboViolence2/tree/main/docs/build).
+
+## Minimal system requirements
+
+- Windows 10 22H2 or later (x64).
+- macOS 12 or later with Apple Silicon (M1 or newer).
+- Linux x64 with glibc 2.39 or newer: Linux Mint 22, Ubuntu 24.04, Debian 13 or later.

@@ -1,5 +1,5 @@
 // POST /api/submissions: checks a map submission, stores the files and an immutable record, and answers with the
-// receipt the form shows (ADR 0002). Field names match website/submit-map.html.
+// receipt the form shows (ADR 0003). Field names match website/submit-map.html.
 import { currentAgreement } from './agreement.js';
 import { MAX_MAP_BYTES, readMapHeader } from './bvm.js';
 import { eventStatement } from './records.js';

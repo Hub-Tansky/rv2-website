@@ -1,4 +1,4 @@
-// Small helpers shared by the map submission Worker (ADR 0002). Web APIs only, so the tests run in plain Node.
+// Small helpers shared by the map submission Worker (ADR 0003). Web APIs only, so the tests run in plain Node.
 
 const encoder = new TextEncoder();
 

@@ -1,4 +1,4 @@
-// Map submission form (submit-map.html, ADR 0002). The service at submit.roboviolence.com signs players in with
+// Map submission form (submit-map.html, ADR 0003). The service at submit.roboviolence.com signs players in with
 // Discord, serves the agreement and stores submissions; this module only drives the form.
 // The exports are for tests/website/site.test.mjs; the DOM part runs only in a browser.
 

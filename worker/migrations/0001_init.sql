@@ -1,4 +1,4 @@
--- Map submission records (ADR 0002). Both tables are append-only: the triggers refuse every UPDATE, and every
+-- Map submission records (ADR 0003). Both tables are append-only: the triggers refuse every UPDATE, and every
 -- DELETE except for a submission listed in `purges` (a submission that was not accepted, deleted when its
 -- retention ends; see src/purge.js). A review decision or a takedown is a new event, never an edit. The full
 -- record of each submission is also stored, locked, in the bucket at submissions/<id>/record.json;

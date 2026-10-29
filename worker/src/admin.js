@@ -1,4 +1,4 @@
-// Review pages for the owner at /admin, behind Cloudflare Access (ADR 0002): list, one submission with its files
+// Review pages for the owner at /admin, behind Cloudflare Access (ADR 0003): list, one submission with its files
 // and history, status changes (appended events), a contributor's export and the event chain check.
 import { STATUSES, appendEvent, currentStatus, verifyChain } from './records.js';
 import { escapeHtml as e, sha256 } from './util.js';

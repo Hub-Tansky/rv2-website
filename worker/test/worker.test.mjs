@@ -1,4 +1,4 @@
-// Map submission Worker (ADR 0002). Run: node --test worker/test/
+// Map submission Worker (ADR 0003). Run: node --test worker/test/
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { clearAgreementCacheForTests } from '../src/agreement.js';

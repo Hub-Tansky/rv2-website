@@ -1,4 +1,4 @@
-// Map submission service at submit.roboviolence.com (ADR 0002, runbook docs/ops/map-submissions.md).
+// Map submission service at submit.roboviolence.com (ADR 0003, runbook docs/ops/map-submissions.md).
 // The form is website/submit-map.html on roboviolence.com; it calls /api/* here with the session cookie.
 import { currentAgreement } from './agreement.js';
 import { accessUser, loginCallback, loginRedirect, logoutCookie, readSession } from './auth.js';

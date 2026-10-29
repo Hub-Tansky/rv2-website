@@ -1,4 +1,4 @@
-# Map submission service (worker/, ADR 0002): tests on PRs and pushes, deploys to Cloudflare from main.
+# Map submission service (worker/, ADR 0003): tests on PRs and pushes, deploys to Cloudflare from main.
 # Deploy needs the repository secrets CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID (docs/ops/map-submissions.md);
 # without them, or before setup wrote the D1 database ID, the deploy job skips itself.
 name: worker

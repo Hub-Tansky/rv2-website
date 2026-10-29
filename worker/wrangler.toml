@@ -1,4 +1,4 @@
-# Map submission service (ADR 0002). One-time setup and secrets: docs/ops/map-submissions.md.
+# Map submission service (ADR 0003). One-time setup and secrets: docs/ops/map-submissions.md.
 # Nothing here is secret. Secrets (DISCORD_CLIENT_SECRET, SESSION_SECRET, TURNSTILE_SECRET_KEY, ADMIN_EMAILS, REVIEW_WEBHOOK_URL)
 # are set with `wrangler secret put`.
 name = "rv2-map-submissions"

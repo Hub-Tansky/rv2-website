@@ -5,7 +5,7 @@ Static site for roboviolence.com. Layout, commands and file list: [README.md](RE
 ## Rules
 
 - After any change to a page, run `node tools/website-markdown.mjs` and `node --test tests/website/site.test.mjs`; commit the regenerated `.md` copies with the page.
-- After any change in `worker/`, run `node --test worker/test/worker.test.mjs`. The map submission agreement text never goes into this repository: it lives only in the R2 bucket (ADR 0002). Changes to stored data go through new migrations in `worker/migrations/`; the tables stay append-only.
+- After any change in `worker/`, run `node --test worker/test/worker.test.mjs`. The map submission agreement text never goes into this repository: it lives only in the R2 bucket (ADR 0003). Changes to stored data go through new migrations in `worker/migrations/`; the tables stay append-only.
 - Every page shares the same header and footer (the tests compare them). Use the component classes in `theme.js` rather than long class lists.
 - A new third party the browser contacts (CDN, font, badge, analytics) goes into the privacy policy in the same PR.
 - Release file names come from the game's `build.yml`. When they change there, update `PLATFORMS` in `site.js` and the names in `install.html`.

@@ -34,7 +34,7 @@
     <div class="menu" id="menu">
       <a class="nav-link" href="install.html" aria-current="page">Download</a>
       <a class="nav-link" href="about.html">About</a>
-      <a class="nav-link" data-discord href="#">Discord server</a>
+      <a class="nav-link" data-discord href="#" target="_blank" rel="noopener">Get Support on Discord</a>
       <a class="nav-link" href="server.html">Your own game server</a>
     </div>
   </nav>
@@ -48,7 +48,8 @@
     </div>
 
     <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
-      <a class="btn-primary" id="download-button" href="#downloads"><i data-lucide="download"></i><span data-label>Download</span></a>
+      <a class="btn-primary" id="download-button" data-download href="#downloads"><i data-lucide="download"></i><span data-label>Download</span></a>
+      <a class="btn-secondary" data-download hidden href="#downloads"><i data-lucide="download"></i><span data-label>Download</span></a>
       <p class="text-sm text-muted" id="download-note"></p>
     </div>
 
@@ -57,15 +58,8 @@
       <ol>
         <li>Download the original game: <a href="https://github.com/Daivuk/BaboViolent2/archive/refs/heads/master.zip">BaboViolent2-master.zip</a>.</li>
         <li>Unzip it into your Downloads, Desktop or Documents folder. Robo Violence 2 finds it there on start.</li>
-        <li>Elsewhere, the game asks on first start: choose <code>BaboViolent2-master/BaboViolent2/Content/main/</code> or any folder above it.</li>
+        <li>Otherwise, the game asks on first start: choose <code>BaboViolent2-master/BaboViolent2/Content/main/</code> or any folder above it.</li>
       </ol>
-
-      <h2 id="requirements">Requirements</h2>
-      <ul>
-        <li>Windows 10 22H2 or later (x64) with an OpenGL 2.1 GPU driver.</li>
-        <li>macOS 12 or later, Apple Silicon (M1 or newer).</li>
-        <li>Linux x64 with glibc 2.39 or newer: Ubuntu 24.04, Linux Mint 22, Debian 13 or later.</li>
-      </ul>
 
       <h2 id="downloads">Downloads <span class="text-base font-medium text-muted" id="release-tag"></span></h2>
       <ul id="download-list">
@@ -76,10 +70,8 @@
     <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
       <div class="card prose-rv min-w-0" id="windows">
         <h3 class="!mt-0">Windows</h3>
-        <p>Run <code>roboviolence2-win-x64-msvc-setup.exe</code>. It installs for your user only, without admin rights, and adds a Start-menu entry.</p>
-        <p>Project uses the <a href="https://signpath.org">SignPath Foundation</a> for code signing.</p>
-        <p>Privacy: the game sends nothing to other networked systems unless you ask it to (the server list, joining a server). The installer links the <a href="privacy.html">privacy policy</a> and can turn the public server list off.</p>
-        <p>Until signed releases ship, the installer is unsigned. On "Windows protected your PC" (SmartScreen) choose <strong>More info → Run anyway</strong>.</p>
+        <p>Run <code>roboviolence2-win-x64-msvc-setup.exe</code>. It installs for your user only and adds a Start-menu entry.</p>
+        <p>Until we ship the first release signed with a certificate, the installer is unsigned. On "Windows protected your PC" (SmartScreen) choose <strong>More info → Run anyway</strong>.</p>
       </div>
       <div class="card prose-rv min-w-0" id="macos">
         <h3 class="!mt-0">macOS</h3>
@@ -92,9 +84,7 @@
         <h3 class="!mt-0">Linux</h3>
         <p>Ubuntu, Mint, Debian: install <code>roboviolence2-linux-x64.deb</code>, then start Robo Violence 2 from the applications menu.</p>
         <pre><code>sudo apt install ./roboviolence2-linux-x64.deb</code></pre>
-        <p>Other distributions, or without installing: get the GL libraries (Ubuntu, Mint, Debian names):</p>
-        <pre><code>sudo apt install libgl1 libglu1-mesa</code></pre>
-        <p>Unpack and start:</p>
+        <p>Other distributions: unpack the <code>.tar.gz</code> and start:</p>
         <pre><code>tar -xzf roboviolence2-linux-x64.tar.gz
 cd roboviolence2-linux-x64
 ./run-client.sh</code></pre>
@@ -102,6 +92,15 @@ cd roboviolence2-linux-x64
     </div>
 
     <p class="prose-rv mt-10">More detail, troubleshooting and building from source: <a href="https://github.com/Hub-Tansky/RoboViolence2/tree/main/docs/build">build guides</a>.</p>
+
+    <div class="prose-rv mt-24">
+      <h2 id="requirements">Minimal system requirements</h2>
+      <ul>
+        <li>Windows 10 22H2 or later (x64).</li>
+        <li>macOS 12 or later with Apple Silicon (M1 or newer).</li>
+        <li>Linux x64 with glibc 2.39 or newer: Linux Mint 22, Ubuntu 24.04, Debian 13 or later.</li>
+      </ul>
+    </div>
   </div>
 </main>
 

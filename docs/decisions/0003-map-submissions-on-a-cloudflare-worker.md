@@ -1,4 +1,4 @@
-# 0002: Map submissions go through a Cloudflare Worker with Discord sign-in, R2 and D1
+# 0003: Map submissions go through a Cloudflare Worker with Discord sign-in, R2 and D1
 
 - Status: Accepted
 - Date: 2026-10-27

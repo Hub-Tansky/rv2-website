@@ -1,4 +1,4 @@
-// The submission agreement shown on the form and accepted with each map (ADR 0002).
+// The submission agreement shown on the form and accepted with each map (ADR 0003).
 // Its text lives only in the bucket, at agreements/<sha256>.txt, never in this repository. AGREEMENT_SHA256 picks the
 // current one; the hash is the version that every record cites, so a stored text can't drift from what was accepted.
 import { sha256 } from './util.js';
