@@ -1,0 +1,39 @@
+# Map submission service (ADR 0003). One-time setup and secrets: docs/ops/map-submissions.md.
+# Nothing here is secret. Secrets (DISCORD_CLIENT_SECRET, SESSION_SECRET, TURNSTILE_SECRET_KEY, ADMIN_EMAILS, REVIEW_WEBHOOK_URL)
+# are set with `wrangler secret put`.
+name = "rv2-map-submissions"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+workers_dev = false
+routes = [{ pattern = "submit.roboviolence.com", custom_domain = true }]
+
+[vars]
+SITE_ORIGIN = "https://roboviolence.com"
+API_ORIGIN = "https://submit.roboviolence.com"
+SUBMISSIONS_PER_DAY = "5"
+# Rejected submissions are deleted this long after they arrive (privacy policy, "Map submissions")
+NOT_ACCEPTED_RETENTION_DAYS = "365"
+# Filled in during setup (docs/ops/map-submissions.md). The form stays closed while AGREEMENT_SHA256 is empty.
+DISCORD_CLIENT_ID = "1565493133708492984"
+TURNSTILE_SITE_KEY = "0x4AAAAAAFry7AG3KMVEXca6"
+ACCESS_TEAM_DOMAIN = "shiny-leaf-78f7.cloudflareaccess.com"
+ACCESS_AUD = "c077636a4ec5593a9de62503f3dc86361772c5a1965a95852f66445259e3c49a"
+AGREEMENT_VERSION = ""
+AGREEMENT_SHA256 = ""
+
+[[r2_buckets]]
+binding = "FILES"
+bucket_name = "rv2-map-submissions"
+jurisdiction = "eu"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "rv2-map-submissions"
+database_id = "7e59cfa4-58b7-41a3-a91f-fd0c7d0ba128" # replaced by worker/scripts/setup.sh
+migrations_dir = "migrations"
+
+[triggers]
+crons = ["23 3 * * *"]
+
+[observability]
+enabled = true

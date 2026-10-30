@@ -10,6 +10,7 @@ Every page is also available as Markdown at the same address with `.md` instead 
 - [Install guide](https://roboviolence.com/install.md): requirements, release files and install steps for Windows, macOS and Linux, original game data
 - [Your own game server](https://roboviolence.com/server.md): ports, starting a server from a download, Docker image
 - [About](https://roboviolence.com/about.md): project background and credits
+- [Submit a map](https://roboviolence.com/submit-map.md): sending a community map to the project (Discord sign-in, .bvm upload, licence agreement)
 - [Privacy policy](https://roboviolence.com/privacy.md): personal data the game, servers and website process (GDPR)
 
 ## Project
