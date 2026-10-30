@@ -35,6 +35,13 @@ export function receiptLines(r) {
   ];
 }
 
+// Says what the disabled button waits for, and that nothing is sent before it is pressed.
+export function submitHint(formValid, humanChecked) {
+  if (!formValid) return 'Fill in the fields marked above and tick the agreement box to enable the button.';
+  if (!humanChecked) return 'Running an automatic check that you are human. If a Cloudflare box appears above the button, complete it.';
+  return 'Ready. Nothing is sent until you press the button.';
+}
+
 export const SIGNIN_PROBLEMS = {
   expired: 'The Discord sign-in took too long. Try again.',
   cancelled: 'The Discord sign-in was cancelled.',
@@ -121,6 +128,7 @@ function setUpForm(form, agreement, user) {
     for (const input of assetList.querySelectorAll('input, textarea')) input.disabled = !thirdParty;
     if (thirdParty && assetList.children.length === 0) addAsset();
     button.disabled = !(form.checkValidity() && token);
+    $('submit-hint').textContent = submitHint(form.checkValidity(), Boolean(token));
   };
 
   const renumber = () => {
@@ -164,6 +172,8 @@ function setUpForm(form, agreement, user) {
       widget = turnstile.render('#human-check', {
         sitekey: agreement.turnstile_site_key,
         theme: 'dark',
+        // Shown only when Cloudflare needs the player to click; its "Success!" read like the map had been sent
+        appearance: 'interaction-only',
         callback: (t) => {
           token = t;
           update();

@@ -259,3 +259,10 @@ test('the map form receipt lists the record fingerprint and flags missing eviden
   assert.match(lines['Assets without evidence'], /checked by hand/);
   assert.ok(!('Assets without evidence' in Object.fromEntries(receiptLines({ ...receipt, missing_evidence: 0 }))));
 });
+
+test('the map form says what the submit button waits for', async () => {
+  const { submitHint } = await import('../../website/submit-map.js');
+  assert.match(submitHint(false, true), /Fill in/);
+  assert.match(submitHint(true, false), /check that you are human/);
+  assert.match(submitHint(true, true), /Nothing is sent until you press the button/);
+});
