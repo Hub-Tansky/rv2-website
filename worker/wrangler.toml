@@ -13,13 +13,14 @@ API_ORIGIN = "https://submit.roboviolence.com"
 SUBMISSIONS_PER_DAY = "5"
 # Rejected submissions are deleted this long after they arrive (privacy policy, "Map submissions")
 NOT_ACCEPTED_RETENTION_DAYS = "365"
-# Filled in during setup (docs/ops/map-submissions.md). The form stays closed while AGREEMENT_SHA256 is empty.
+# Filled in during setup (docs/ops/map-submissions.md). The form stays closed while AGREEMENT_SHA256 is empty or its text
+# is not in the bucket yet (worker/scripts/publish-agreement.sh uploads it).
 DISCORD_CLIENT_ID = "1565493133708492984"
 TURNSTILE_SITE_KEY = "0x4AAAAAAFry7AG3KMVEXca6"
 ACCESS_TEAM_DOMAIN = "shiny-leaf-78f7.cloudflareaccess.com"
 ACCESS_AUD = "c077636a4ec5593a9de62503f3dc86361772c5a1965a95852f66445259e3c49a"
-AGREEMENT_VERSION = ""
-AGREEMENT_SHA256 = ""
+AGREEMENT_VERSION = "1.0"
+AGREEMENT_SHA256 = "86af6aeb5e38fb3a5ff6aac360b179ce4768e4a8874a9def9dfe80483bd7fb6f"
 
 [[r2_buckets]]
 binding = "FILES"
