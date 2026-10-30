@@ -64,8 +64,9 @@
         </div>
         <label class="field"><span class="field-label">Name to credit</span>
           <input class="input" name="credit_name" maxlength="40" required autocomplete="nickname">
-          <span class="field-hint">Shown with the map if it is published.</span>
+          <span class="field-hint">Your name or a pseudonym, shown with the map if it is published.</span>
         </label>
+        <label class="choice field"><input type="checkbox" name="credit_anonymous" value="yes">Credit me anonymously: publish the map without a name</label>
         <label class="field"><span class="field-label">Map title</span>
           <input class="input" name="title" maxlength="60" required>
         </label>
@@ -92,11 +93,12 @@
         <template id="asset-template">
           <fieldset class="card field">
             <legend class="field-label">Asset <span data-number></span></legend>
-            <label class="field"><span class="field-label">Asset name</span><input class="input" data-name="asset_name" maxlength="200" required></label>
+            <label class="field"><span class="field-label">What it is (name and short description)</span><input class="input" data-name="asset_name" maxlength="200" required></label>
             <label class="field"><span class="field-label">Creator or rights holder</span><input class="input" data-name="asset_rightsholder" maxlength="200" required></label>
             <label class="field"><span class="field-label">Source URL or origin</span><input class="input" data-name="asset_source" maxlength="200" required></label>
             <label class="field"><span class="field-label">Licence or permission</span><textarea class="input" data-name="asset_license" maxlength="500" rows="2" required></textarea></label>
-            <label class="field"><span class="field-label">Required attribution (optional)</span><input class="input" data-name="asset_attribution" maxlength="200"></label>
+            <label class="field"><span class="field-label">Restrictions on modification, redistribution or commercial use (optional)</span><textarea class="input" data-name="asset_restrictions" maxlength="500" rows="2"></textarea></label>
+            <label class="field"><span class="field-label">Required attribution or copyright notice (optional)</span><input class="input" data-name="asset_attribution" maxlength="200"></label>
             <label class="field"><span class="field-label">Evidence link (optional)</span><input class="input" data-name="asset_evidence_url" type="url" maxlength="200" placeholder="https://"></label>
             <label class="field"><span class="field-label">Evidence file (optional)</span><input class="input" data-name="asset_evidence_file" type="file" accept=".pdf,.png,.jpg,.jpeg,.txt"></label>
             <button class="btn-secondary" type="button" data-remove>Remove this asset</button>
@@ -106,6 +108,10 @@
         <h2>Agreement</h2>
         <p>Robo Violence 2 Community Map Submission Agreement, version <strong id="agreement-version"></strong>. <a id="agreement-print" href="#">Printable copy</a></p>
         <div class="agreement-text" id="agreement-text" tabindex="0"></div>
+        <div id="confirmations" hidden>
+          <p id="confirmations-intro"></p>
+          <ul id="confirmations-list"></ul>
+        </div>
         <label class="choice field"><input type="checkbox" name="agree" value="yes" required><span id="consent-text"></span></label>
         <span class="field-error" data-error-for="agree" hidden></span>
         <input type="hidden" name="agreement_sha256">
@@ -119,9 +125,12 @@
       <section id="receipt" hidden>
         <h2>Map received</h2>
         <p>Thank you. Your map is recorded and waits for review. We'll contact you on Discord if we have questions.</p>
+        <h3>Contributor and Submission Record</h3>
+        <ul id="record-list"></ul>
+        <h3>Receipt details</h3>
         <ul id="receipt-list"></ul>
-        <p>Keep a copy of this page (a screenshot is fine): the submission ID and record fingerprint identify exactly what you sent and accepted.</p>
-        <p><a class="btn-secondary" href="submit-map.html">Submit another map</a></p>
+        <p>Keep a copy of this record: print it or save it as PDF. The submission ID and record fingerprint identify exactly what you sent and accepted. You can also ask on Discord for a copy at any time.</p>
+        <p class="flex flex-wrap gap-3"><button class="btn-primary" type="button" id="print-record"><i data-lucide="printer"></i>Print or save as PDF</button><a class="btn-secondary" href="submit-map.html">Submit another map</a></p>
       </section>
     </div>
   </div>

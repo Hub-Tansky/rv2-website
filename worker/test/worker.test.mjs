@@ -1,7 +1,7 @@
 // Map submission Worker (ADR 0003). Run: node --test worker/test/
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { clearAgreementCacheForTests } from '../src/agreement.js';
+import { clearAgreementCacheForTests, splitAgreement } from '../src/agreement.js';
 import { accessUser, readSession, resetAccessKeysForTests, signSession } from '../src/auth.js';
 import { readMapHeader } from '../src/bvm.js';
 import worker from '../src/index.js';
@@ -13,7 +13,7 @@ import { fakeD1, fakeR2 } from './fakes.mjs';
 
 const SITE = 'https://roboviolence.com';
 const API = 'https://submit.roboviolence.com';
-const AGREEMENT = 'Test agreement text.\nClause 1.\n';
+const AGREEMENT = 'Test agreement text.\nClause 1.\n\n---\n\nContributor Acceptance\n\nBy checking the box, I confirm that:\n\n- I have read it.\n\n- I disclosed all third-party material.\n\nI agree to the Test Agreement, version 1.0.\n';
 const USER = { id: '123456789012345678', username: 'mapper', globalName: 'Map Maker' };
 
 // A map in the game's newest layout (20202): version, author, theme, weather, size, two bytes per cell, spawns.
@@ -146,14 +146,21 @@ test('the agreement endpoint serves the stored text with its hash, or says the f
   const env = await setUp();
   const body = await (await worker.fetch(new Request(`${API}/api/agreement`), env)).json();
   assert.equal(body.text, AGREEMENT);
+  assert.equal(body.terms, 'Test agreement text.\nClause 1.\n');
+  assert.equal(body.intro, 'By checking the box, I confirm that:');
+  assert.deepEqual(body.confirmations, ['I have read it.', 'I disclosed all third-party material.']);
+  assert.equal(body.consent, 'I agree to the Test Agreement, version 1.0.');
   assert.equal(body.sha256, env.AGREEMENT_SHA256);
-  assert.match(body.consent, /version 1\.0\. I confirm/);
   assert.equal(body.turnstile_site_key, 'site-key');
   assert.equal((await worker.fetch(new Request(`${API}/api/agreement`), await setUp({ AGREEMENT_SHA256: '' }))).status, 503);
   // A stored text that doesn't match its hash is never served as that version
   const tampered = await setUp();
   await tampered.FILES.put(`agreements/${tampered.AGREEMENT_SHA256}.txt`, 'Other text');
   assert.equal((await worker.fetch(new Request(`${API}/api/agreement`), tampered)).status, 500);
+});
+
+test('a text without an acceptance section is all terms, with the default statement', () => {
+  assert.deepEqual(splitAgreement('Only terms.\n', '2.0'), { terms: 'Only terms.\n', intro: '', confirmations: [], consent: 'I agree to the Robo Violence 2 Community Map Submission Agreement, version 2.0.' });
 });
 
 test('a valid submission stores the files and a record that binds account, map, agreement and time', async () => {
@@ -172,6 +179,21 @@ test('a valid submission stores the files and a record that binds account, map, 
     assert.equal(record.agreement.sha256, env.AGREEMENT_SHA256);
     assert.equal(record.map.author_in_file, 'Tester');
     assert.equal(record.acceptance.accepted_at, record.received_at);
+    assert.equal(record.acceptance.consent_text, 'I agree to the Test Agreement, version 1.0.');
+    assert.equal(record.acceptance.confirmations.length, 2);
+    const filled = Object.fromEntries(record.submission_record);
+    assert.deepEqual(filled, {
+      'Contributor display name': 'Map Maker',
+      'Contributor account identifier': `Discord ${USER.id} (mapper)`,
+      'Contribution identifier': body.id,
+      'Submitted filename': 'CTF-Test.bvm',
+      'Agreement version': '1.0',
+      'Accepted at': record.received_at,
+      'Third-party material disclosure': 'None',
+      'Contribution SHA-256 checksum': body.map.sha256,
+    });
+    assert.deepEqual(body.agreement_record, record.submission_record);
+    assert.equal(body.credit, 'Map Maker');
     assert.deepEqual([...env.FILES.objects.get(`submissions/${body.id}/map.bvm`).bytes], [...bvm()]);
     const row = await env.DB.prepare('SELECT * FROM submissions WHERE id = ?').bind(body.id).first();
     assert.equal(row.receipt_sha256, body.receipt_sha256);
@@ -392,8 +414,8 @@ test('FORM_FIELDS and ASSET_FIELDS are the names the service reads', async () =>
   const env = await setUp();
   const fake = stubFetch();
   try {
-    const values = { title: 'T', description: 'D', credit_name: 'C', third_party: 'yes', agree: 'yes', agreement_sha256: env.AGREEMENT_SHA256, 'cf-turnstile-response': 'x' };
-    const asset = { asset_name: 'A', asset_rightsholder: 'R', asset_source: 'S', asset_license: 'L', asset_attribution: 'B', asset_evidence_url: 'https://example.org/l' };
+    const values = { title: 'T', description: 'D', credit_name: 'C', credit_anonymous: 'no', third_party: 'yes', agree: 'yes', agreement_sha256: env.AGREEMENT_SHA256, 'cf-turnstile-response': 'x' };
+    const asset = { asset_name: 'A', asset_rightsholder: 'R', asset_source: 'S', asset_license: 'L', asset_restrictions: 'No commercial use without asking', asset_attribution: 'B', asset_evidence_url: 'https://example.org/l' };
     assert.deepEqual(Object.keys(values).concat('map').toSorted(), FORM_FIELDS.toSorted());
     assert.deepEqual(Object.keys(asset).concat('asset_evidence_file').toSorted(), ASSET_FIELDS.toSorted());
     const data = await form(env, { ...values, ...Object.fromEntries(Object.entries(asset).map(([k, v]) => [`${k}_0`, v])) }, { files: { asset_evidence_file_0: [new TextEncoder().encode('ok'), 'l.txt'] } });
@@ -401,9 +423,26 @@ test('FORM_FIELDS and ASSET_FIELDS are the names the service reads', async () =>
     assert.equal(response.status, 201, JSON.stringify(body));
     const record = JSON.parse(new TextDecoder().decode(env.FILES.objects.get(`submissions/${body.id}/record.json`).bytes));
     assert.deepEqual(
-      [record.title, record.description, record.credit_name, record.third_party.assets[0].attribution, record.third_party.assets[0].evidence_url, record.third_party.assets[0].evidence_file.type],
-      ['T', 'D', 'C', 'B', 'https://example.org/l', 'text/plain'],
+      [record.title, record.description, record.credit_name, record.third_party.assets[0].restrictions, record.third_party.assets[0].attribution, record.third_party.assets[0].evidence_url, record.third_party.assets[0].evidence_file.type],
+      ['T', 'D', 'C', 'No commercial use without asking', 'B', 'https://example.org/l', 'text/plain'],
     );
+    assert.equal(Object.fromEntries(record.submission_record)['Third-party material disclosure'], `1 item(s), listed in record ${body.id}`);
+  } finally {
+    fake.restore();
+  }
+});
+
+test('a contributor can be credited anonymously instead of by name (agreement clause 10)', async () => {
+  const env = await setUp();
+  const fake = stubFetch();
+  try {
+    assert.ok((await submit(env, await form(env, { credit_name: '' }))).body.errors.credit_name);
+    const { response, body } = await submit(env, await form(env, { credit_name: '', credit_anonymous: 'yes' }));
+    assert.equal(response.status, 201, JSON.stringify(body));
+    assert.equal(body.credit, 'Anonymous');
+    const record = JSON.parse(new TextDecoder().decode(env.FILES.objects.get(`submissions/${body.id}/record.json`).bytes));
+    assert.deepEqual([record.credit_name, record.credit_anonymous], ['', true]);
+    assert.equal(Object.fromEntries(record.submission_record)['Contributor display name'], 'Map Maker', 'the account is still recorded');
   } finally {
     fake.restore();
   }

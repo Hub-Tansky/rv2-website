@@ -17,8 +17,8 @@ export const LIMITS = {
 };
 
 // The form's field names (website/submit-map.html); asset fields carry a _0 to _9 suffix.
-export const FORM_FIELDS = ['title', 'description', 'credit_name', 'map', 'third_party', 'agree', 'agreement_sha256', 'cf-turnstile-response'];
-export const ASSET_FIELDS = ['asset_name', 'asset_rightsholder', 'asset_source', 'asset_license', 'asset_attribution', 'asset_evidence_url', 'asset_evidence_file'];
+export const FORM_FIELDS = ['title', 'description', 'credit_name', 'credit_anonymous', 'map', 'third_party', 'agree', 'agreement_sha256', 'cf-turnstile-response'];
+export const ASSET_FIELDS = ['asset_name', 'asset_rightsholder', 'asset_source', 'asset_license', 'asset_restrictions', 'asset_attribution', 'asset_evidence_url', 'asset_evidence_file'];
 
 const EVIDENCE_TYPES = [
   { type: 'application/pdf', ext: 'pdf', magic: [0x25, 0x50, 0x44, 0x46] },
@@ -66,8 +66,10 @@ export async function readForm(form, agreement) {
   const title = text('title', LIMITS.title);
   if (!title) errors.title = 'Give the map a title.';
   const description = text('description', LIMITS.description);
-  const creditName = text('credit_name', LIMITS.creditName);
-  if (!creditName) errors.credit_name = 'Give the name to credit you with.';
+  // Agreement clause 10: credited by a name or pseudonym, or anonymously
+  const creditAnonymous = form.get('credit_anonymous') === 'yes';
+  const creditName = creditAnonymous ? '' : text('credit_name', LIMITS.creditName);
+  if (!creditAnonymous && !creditName) errors.credit_name = 'Give the name to credit you with, or choose to be credited anonymously.';
 
   let map = null;
   const file = form.get('map');
@@ -91,6 +93,7 @@ export async function readForm(form, agreement) {
         rightsholder: text(`asset_rightsholder_${i}`, LIMITS.assetText),
         source: text(`asset_source_${i}`, LIMITS.assetText),
         license: text(`asset_license_${i}`, LIMITS.assetLicense),
+        restrictions: text(`asset_restrictions_${i}`, LIMITS.assetLicense),
         attribution: text(`asset_attribution_${i}`, LIMITS.assetText),
         evidenceUrl: text(`asset_evidence_url_${i}`, LIMITS.assetText),
       };
@@ -121,7 +124,21 @@ export async function readForm(form, agreement) {
   else if (form.get('agree') !== 'yes') errors.agree = 'Tick the box to accept the agreement.';
 
   if (Object.keys(errors).length) return { errors };
-  return { fields: { title, description, creditName }, map, assets };
+  return { fields: { title, description, creditName, creditAnonymous }, map, assets };
+}
+
+// The agreement's "Contributor and Submission Record" fields, in its order and with its labels.
+export function submissionRecord({ id, receivedAt, user, filename, mapSha, agreement, thirdPartyCount }) {
+  return [
+    ['Contributor display name', user.globalName || user.username],
+    ['Contributor account identifier', `Discord ${user.id} (${user.username})`],
+    ['Contribution identifier', id],
+    ['Submitted filename', filename],
+    ['Agreement version', agreement.version],
+    ['Accepted at', receivedAt],
+    ['Third-party material disclosure', thirdPartyCount ? `${thirdPartyCount} item(s), listed in record ${id}` : 'None'],
+    ['Contribution SHA-256 checksum', mapSha],
+  ];
 }
 
 export async function handleSubmission(request, env, ctx, user, fetcher = fetch, now = () => new Date()) {
@@ -170,6 +187,7 @@ export async function handleSubmission(request, env, ctx, user, fetcher = fetch,
       rightsholder: asset.rightsholder,
       source: asset.source,
       license: asset.license,
+      restrictions: asset.restrictions,
       attribution: asset.attribution,
       evidence_url: asset.evidenceUrl || null,
       evidence_file: evidenceFile,
@@ -183,6 +201,7 @@ export async function handleSubmission(request, env, ctx, user, fetcher = fetch,
     received_at: receivedAt,
     account: { provider: 'discord', id: user.id, username: user.username, global_name: user.globalName },
     credit_name: fields.creditName,
+    credit_anonymous: fields.creditAnonymous,
     title: fields.title,
     description: fields.description,
     map: {
@@ -197,8 +216,16 @@ export async function handleSubmission(request, env, ctx, user, fetcher = fetch,
       author_in_file: map.header.author,
     },
     agreement: { version: agreement.version, sha256: agreement.sha256, key: `agreements/${agreement.sha256}.txt` },
-    acceptance: { action: 'Submit map and accept agreement', consent_text: agreement.consent, accepted_at: receivedAt },
+    acceptance: {
+      action: 'Submit map and accept agreement',
+      confirmations_intro: agreement.intro,
+      confirmations: agreement.confirmations,
+      consent_text: agreement.consent,
+      accepted_at: receivedAt,
+    },
     third_party: { declared: assets.length > 0, assets: disclosed },
+    // The agreement's "Contributor and Submission Record", filled in
+    submission_record: submissionRecord({ id, receivedAt, user, filename: map.filename, mapSha, agreement, thirdPartyCount: disclosed.length }),
     service: { worker_release: env.RELEASE ?? 'dev' },
   };
   const receipt = canonicalJson(record);
@@ -233,7 +260,7 @@ export async function handleSubmission(request, env, ctx, user, fetcher = fetch,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        content: `New map submission ${id}: "${fields.title}" by ${fields.creditName}. Review: ${env.API_ORIGIN}/admin/s/${id}`,
+        content: `New map submission ${id}: "${fields.title}" by ${fields.creditName || 'anonymous'}. Review: ${env.API_ORIGIN}/admin/s/${id}`,
         allowed_mentions: { parse: [] },
       }),
     }).catch(() => {});
@@ -249,5 +276,7 @@ export async function handleSubmission(request, env, ctx, user, fetcher = fetch,
     third_party_count: disclosed.length,
     missing_evidence: missingEvidence,
     receipt_sha256: receiptSha,
+    agreement_record: record.submission_record,
+    credit: fields.creditAnonymous ? 'Anonymous' : fields.creditName,
   });
 }

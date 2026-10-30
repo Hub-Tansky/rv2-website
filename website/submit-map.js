@@ -24,15 +24,12 @@ export function evidenceFileProblem(file) {
   return '';
 }
 
-// The receipt lines shown after a successful submission.
+// The receipt lines shown after a successful submission, below the agreement's record (r.agreement_record).
 export function receiptLines(r) {
   return [
-    ['Submission ID', r.id],
-    ['Received (UTC)', r.received_at],
-    ['Map file', `${r.map.filename} (${r.map.size} bytes)`],
-    ['Map SHA-256', r.map.sha256],
-    ['Agreement version', `${r.agreement_version} (SHA-256 ${r.agreement_sha256})`],
-    ['Third-party assets declared', String(r.third_party_count)],
+    ['Credited as', r.credit],
+    ['Map file size', `${r.map.size} bytes`],
+    ['Agreement SHA-256', r.agreement_sha256],
     ...(r.missing_evidence ? [['Assets without evidence', `${r.missing_evidence}: these are checked by hand before the map is accepted`]] : []),
     ['Record fingerprint (SHA-256)', r.receipt_sha256],
   ];
@@ -74,8 +71,17 @@ function setUpForm(form, agreement, user) {
   $('account').value = `${user.username} (Discord ID ${user.id})`;
   form.elements.credit_name.value = user.globalName || user.username;
   $('agreement-version').textContent = agreement.version;
-  $('agreement-text').textContent = agreement.text;
+  $('agreement-text').textContent = agreement.terms;
   $('agreement-print').href = agreement.print_url;
+  $('confirmations-intro').textContent = agreement.intro;
+  $('confirmations-list').replaceChildren(
+    ...agreement.confirmations.map((text) => {
+      const item = document.createElement('li');
+      item.textContent = text;
+      return item;
+    }),
+  );
+  $('confirmations').hidden = agreement.confirmations.length === 0;
   $('consent-text').textContent = agreement.consent;
   form.elements.agreement_sha256.value = agreement.sha256;
 
@@ -106,6 +112,8 @@ function setUpForm(form, agreement, user) {
   };
 
   const update = () => {
+    const anonymous = form.elements.credit_anonymous.checked;
+    form.elements.credit_name.disabled = anonymous;
     form.elements.map.setCustomValidity(mapFileProblem(form.elements.map.files[0]));
     for (const input of form.querySelectorAll('input[type=file][name^="asset_evidence_file_"]')) input.setCustomValidity(evidenceFileProblem(input.files[0]));
     const thirdParty = form.elements.third_party.value === 'yes';
@@ -186,8 +194,8 @@ function setUpForm(form, agreement, user) {
     say('');
     if (response?.status === 201) {
       form.hidden = true;
-      $('receipt-list').replaceChildren(
-        ...receiptLines(body).map(([label, value]) => {
+      const items = (lines) =>
+        lines.map(([label, value]) => {
           const item = document.createElement('li');
           const strong = document.createElement('strong');
           strong.textContent = `${label}: `;
@@ -195,8 +203,9 @@ function setUpForm(form, agreement, user) {
           code.textContent = value;
           item.append(strong, code);
           return item;
-        }),
-      );
+        });
+      $('record-list').replaceChildren(...items(body.agreement_record));
+      $('receipt-list').replaceChildren(...items(receiptLines(body)));
       $('receipt').hidden = false;
       $('receipt').scrollIntoView();
       return;
@@ -216,6 +225,7 @@ function setUpForm(form, agreement, user) {
     update();
   });
 
+  $('print-record').addEventListener('click', () => window.print());
   update();
 }
 

@@ -253,8 +253,9 @@ test('the map form sends the fields the submission service reads', async () => {
 test('the map form receipt lists the record fingerprint and flags missing evidence', async () => {
   const { receiptLines } = await import('../../website/submit-map.js');
   const receipt = { id: 'M-20261027-0a1b2c3d', received_at: '2026-10-27T13:00:00.000Z', map: { filename: 'a.bvm', size: 10, sha256: 'ab' }, agreement_version: '1.0', agreement_sha256: 'cd', third_party_count: 1, missing_evidence: 1, receipt_sha256: 'ef' };
-  const lines = Object.fromEntries(receiptLines(receipt));
+  const lines = Object.fromEntries(receiptLines({ ...receipt, credit: 'Map Maker' }));
   assert.equal(lines['Record fingerprint (SHA-256)'], 'ef');
+  assert.equal(lines['Credited as'], 'Map Maker');
   assert.match(lines['Assets without evidence'], /checked by hand/);
   assert.ok(!('Assets without evidence' in Object.fromEntries(receiptLines({ ...receipt, missing_evidence: 0 }))));
 });

@@ -24,7 +24,7 @@ async function list(env) {
   const rows = results
     .map(
       (r) => `<tr><td><a href="/admin/s/${e(r.id)}">${e(r.id)}</a></td><td>${e(r.received_at)}</td><td>${e(r.title)}</td>
-<td>${e(r.credit_name)} (${e(r.discord_username)})</td><td>${e(r.status)}</td><td>${r.third_party_count}${r.missing_evidence ? ` <span class="bad">${r.missing_evidence} without evidence</span>` : ''}</td></tr>`,
+<td>${r.credit_name ? e(r.credit_name) : "<i>anonymous</i>"} (${e(r.discord_username)})</td><td>${e(r.status)}</td><td>${r.third_party_count}${r.missing_evidence ? ` <span class="bad">${r.missing_evidence} without evidence</span>` : ''}</td></tr>`,
     )
     .join('');
   return page('Map submissions', `<h1>Map submissions</h1><table><tr><th>ID</th><th>Received (UTC)</th><th>Title</th><th>Credit (Discord)</th><th>Status</th><th>Third-party assets</th></tr>${rows}</table>`);
