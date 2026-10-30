@@ -29,7 +29,7 @@ jurisdiction = "eu"
 [[d1_databases]]
 binding = "DB"
 database_name = "rv2-map-submissions"
-database_id = "00000000-0000-0000-0000-000000000000" # replaced by worker/scripts/setup.sh
+database_id = "7e59cfa4-58b7-41a3-a91f-fd0c7d0ba128" # replaced by worker/scripts/setup.sh
 migrations_dir = "migrations"
 
 [triggers]
