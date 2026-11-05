@@ -10,6 +10,7 @@ Static site for roboviolence.com. Layout, commands and file list: [README.md](RE
 - A new third party the browser contacts (CDN, font, badge, analytics) goes into the privacy policy in the same PR.
 - Release file names come from the game's `build.yml`. When they change there, update `PLATFORMS` in `site.js` and the names in `install.html`.
 - Keep the `README.md` file table and the ADR index current. Record non-obvious decisions as ADRs (`docs/decisions/README.md`).
-- Backlog: the private GitHub Project [Robo Violence 2](https://github.com/users/Hub-Tansky/projects/1) (RoboViolence2 ADR 0024). Never create `step*.md`, `NEXT_STEPS.md`, roadmap or task-list files.
+- Backlog: `40-backlog/` in the private vault repo [Hub-Tansky/rv2-docs](https://github.com/Hub-Tansky/rv2-docs), one `ROBO-NNN` file per item (RoboViolence2 ADR 0044); its AGENTS.md has the rules. Never create `step*.md`, `NEXT_STEPS.md`, roadmap or task-list files here.
+- Docs pages are written in rv2-docs `10-public/`, not here; `tools/build-docs.mjs` builds them at deploy (ADR 0004). Run `npm ci` before the tests.
 - Commit messages carry no `Co-Authored-By` or `Claude-Session` trailers. Never commit secrets, real hosts or IPs beyond the public domain.
 - Don't mix mechanical rewrites (renames, formatting) with content changes in one commit.

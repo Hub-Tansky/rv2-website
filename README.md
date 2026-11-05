@@ -4,9 +4,10 @@ The static site at https://roboviolence.com, deployed to GitHub Pages from `main
 
 ## Work on it
 
-- Edit the pages in `website/`. No build step: Tailwind comes from its CDN with `website/theme.js` ([ADR 0035](docs/decisions/0035-website-tailwind-install-page-agent-files.md)).
+- Edit the pages in `website/`. No build step for them: Tailwind comes from its CDN with `website/theme.js` ([ADR 0035](docs/decisions/0035-website-tailwind-install-page-agent-files.md)).
+- Docs pages come from the vault (Hub-Tansky/rv2-docs, `10-public/`) at deploy time ([ADR 0004](docs/decisions/0004-docs-pages-built-from-the-vault.md)). Preview: `npm ci`, `cp -r website _site && node tools/build-docs.mjs <path to 10-public> _site`, then `python3 -m http.server -d _site`.
 - After any page change: `node tools/website-markdown.mjs` (rewrites the `<page>.md` copies; the tests fail on a stale copy).
-- Test: `node --test tests/website/site.test.mjs worker/test/worker.test.mjs` (Node 22). It downloads the game's `build.yml`; offline, point `RV2_BUILD_YML` at a local copy.
+- Test: `npm ci`, then `node --test tests/website/site.test.mjs worker/test/worker.test.mjs` (Node 22). It downloads the game's `build.yml`; offline, point `RV2_BUILD_YML` at a local copy.
 - Preview: open `website/index.html`, or `python3 -m http.server -d website`.
 - `pages.yml` tests every PR and push, deploys `main`, and runs daily so a release file rename in the game repository shows up here.
 
@@ -32,8 +33,11 @@ The static site at https://roboviolence.com, deployed to GitHub Pages from `main
 | `docs/ops/map-submissions.md` | Setting up, reviewing and operating map submissions |
 | `.github/workflows/worker.yml` | Tests the Worker on PRs; applies migrations and deploys it from `main` (ADR 0003) |
 | `tools/website-markdown.mjs` | Writes `website/<page>.md` from each page's `<main>` |
+| `tools/build-docs.mjs` | Builds `docs.html`, `docs/<slug>.html` and `.md` copies from the vault's `10-public/` into the deployed copy (ADR 0004) |
+| `tests/website/docs-fixture/` | Sample vault notes for the docs build test |
+| `package.json`, `package-lock.json` | The one build dependency, `marked`, at an exact version |
 | `tests/website/site.test.mjs` | Installer per OS against the asset names in the game's `build.yml`, OS detection, newest release incl. pre-releases, button offer and fallback, shared chrome, privacy contact, CDN and canonical tags, sitemap, robots.txt, Markdown copies, JSON-LD |
-| `.github/workflows/pages.yml` | Tests on PRs, pushes and daily; deploys `website/` to GitHub Pages from `main` (ADR 0029, 0001) |
+| `.github/workflows/pages.yml` | Tests on PRs, pushes and daily; deploys `website/` plus the docs built from rv2-docs to GitHub Pages from `main`, also on "Run workflow" and `repository_dispatch` `docs` (ADR 0029, 0001, 0004) |
 | `docs/decisions/` | Website ADRs ([index](docs/decisions/README.md)) |
 | `AGENTS.md` | Rules for coding agents |
 | `LICENSE.txt` | GPL-3.0, as the game |

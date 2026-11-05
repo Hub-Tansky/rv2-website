@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "type": "module",
+  "description": "Build tools for roboviolence.com; the pages themselves need no build (ADR 0035, 0004).",
+  "devDependencies": {
+    "marked": "18.1.1"
+  }
+}
