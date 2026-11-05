@@ -266,3 +266,40 @@ test('the map form says what the submit button waits for', async () => {
   assert.match(submitHint(true, false), /check that you are human/);
   assert.match(submitHint(true, true), /Nothing is sent until you press the button/);
 });
+
+test('build-docs turns vault notes into docs pages with the site chrome (ADR 0004)', async () => {
+  const { mkdtempSync, cpSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+  const { build } = await import('../../tools/build-docs.mjs');
+  const site = mkdtempSync(join(tmpdir(), 'rv2-site-'));
+  try {
+    cpSync(new URL('website/', root), site, { recursive: true });
+    const articles = build(new URL('tests/website/docs-fixture/', root).pathname, site);
+    assert.deepEqual(articles.map((a) => a.slug), ['console-commands', 'host-a-server'], 'ordered by `order`, drafts left out');
+    const at = (p) => readFileSync(join(site, p), 'utf8');
+    const docs = at('docs.html');
+    assert.ok(docs.includes('<a class="nav-link" href="docs.html" aria-current="page">Docs</a>'));
+    assert.ok(docs.includes('<a href="docs/host-a-server.html">Host a server</a>: Run your own game server.'));
+    assert.ok(docs.includes('<link rel="canonical" href="https://roboviolence.com/docs.html">'));
+    const article = at('docs/host-a-server.html');
+    assert.ok(article.includes('<link rel="canonical" href="https://roboviolence.com/docs/host-a-server.html">'));
+    assert.ok(article.includes('<script src="../theme.js"></script>') && article.includes('href="../privacy.html"'), 'chrome paths go up one level');
+    assert.ok(article.includes('<a href="console-commands.html#a-user-commands">'), 'vault .md links point at pages');
+    assert.ok(at('docs/console-commands.html').includes('<h2 id="a-user-commands">A) User commands</h2>'), 'heading ids');
+    assert.ok(article.includes('<td>3333</td>'), 'tables render');
+    assert.ok(article.includes('<link rel="alternate" type="text/markdown" href="host-a-server.md">'));
+    assert.ok(at('docs/host-a-server.md').startsWith('# Host a server'), 'Markdown copy without frontmatter');
+    assert.ok(existsSync(join(site, 'docs/_attachments/list.png')));
+    assert.ok(at('sitemap.xml').includes('<loc>https://roboviolence.com/docs/host-a-server.html</loc>'));
+    assert.ok(at('llms.txt').includes('(https://roboviolence.com/docs/console-commands.md)'));
+    // no source folder: the page still exists
+    const empty = mkdtempSync(join(tmpdir(), 'rv2-site-'));
+    cpSync(new URL('website/', root), empty, { recursive: true });
+    assert.equal(build(join(empty, 'missing'), empty).length, 0);
+    assert.ok(readFileSync(join(empty, 'docs.html'), 'utf8').includes('No articles yet.'));
+    rmSync(empty, { recursive: true });
+  } finally {
+    rmSync(site, { recursive: true });
+  }
+});

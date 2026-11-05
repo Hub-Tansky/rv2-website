@@ -1,4 +1,6 @@
 # The website (website/, ADR 0029, 0001): tests on PRs, deploys to GitHub Pages from main.
+# Every deploy rebuilds the docs pages from the Robo2-docs vault (Hub-Tansky/rv2-docs, 10-public/, ADR 0004).
+# "Run workflow" refreshes the docs alone; rv2-docs can also send a repository_dispatch of type "docs".
 # The daily run catches a release file rename in the game repository's build.yml, which the tests read.
 name: pages
 on:
@@ -8,6 +10,8 @@ on:
   schedule:
     - cron: "17 5 * * *"
   workflow_dispatch:
+  repository_dispatch:
+    types: [docs]
 permissions:
   contents: read
 concurrency:
@@ -21,10 +25,11 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 22
+      - run: npm ci
       - run: node --test tests/website/site.test.mjs
   deploy:
     needs: test
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    if: github.ref == 'refs/heads/main' && contains(fromJSON('["push", "workflow_dispatch", "repository_dispatch"]'), github.event_name)
     runs-on: ubuntu-latest
     permissions:
       pages: write
@@ -32,10 +37,26 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      HAS_DOCS_KEY: ${{ secrets.RV2_DOCS_DEPLOY_KEY != '' }}
     steps:
       - uses: actions/checkout@v7
+      # Read-only deploy key of the private rv2-docs repo; without it the site deploys with an empty docs list.
+      - uses: actions/checkout@v7
+        if: env.HAS_DOCS_KEY == 'true'
+        with:
+          repository: Hub-Tansky/rv2-docs
+          ssh-key: ${{ secrets.RV2_DOCS_DEPLOY_KEY }}
+          path: rv2-docs
+          sparse-checkout: 10-public
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: cp -r website _site && node tools/build-docs.mjs rv2-docs/10-public _site
       - uses: actions/upload-pages-artifact@v5
         with:
-          path: website
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v5
