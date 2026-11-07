@@ -30,7 +30,7 @@ The app is unsigned, so Gatekeeper blocks the first start. Open **System Setting
 xattr -dr com.apple.quarantine "/Applications/Robo Violence 2.app"
 ```
 
-To run a game server on a Mac, get `roboviolence2-macos-arm64.zip` from the same release ([Own server](https://roboviolence.com/server.md)).
+To run a game server on a Mac, get `roboviolence2-macos-arm64.zip` from the same release ([Host game server](https://roboviolence.com/docs/host-a-server.md)).
 
 ### Linux
 

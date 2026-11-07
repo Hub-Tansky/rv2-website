@@ -20,7 +20,7 @@ One game, three systems, and everyone plays on the same servers.
 
 ### Servers ready to join
 
-Our capture the flag and team deathmatch servers are in the in-game server list. You can also [run your own server](https://roboviolence.com/server.md).
+Our capture the flag and team deathmatch servers are in the in-game server list. You can also [run your own server](https://roboviolence.com/docs/host-a-server.md).
 
 ### Free for good
 

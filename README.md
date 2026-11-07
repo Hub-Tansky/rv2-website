@@ -19,7 +19,6 @@ The static site at https://roboviolence.com, deployed to GitHub Pages from `main
 | `website/install.html` | Install guide: download button with version and size, original data steps, requirements, downloads list, per-OS steps (ADR 0035) |
 | `website/about.html` | What the game is; credits to BaboViolent 2 |
 | `website/privacy.html` | Privacy policy (GDPR): data processed by the game, servers and website, legal basis, hosting, retention, rights (RoboViolence2 ADR 0034) |
-| `website/server.html` | Hosting your own game server (summary of the game's `docs/ops/runbook.md`) |
 | `website/submit-map.html` | Map submission form: Discord sign-in, `.bvm` upload, third-party asset disclosures, agreement acceptance, receipt (ADR 0003) |
 | `website/submit-map.js` | Drives the form against the submission service at submit.roboviolence.com; loads Turnstile only after sign-in |
 | `website/site.js` | Download button and list from the GitHub releases API, Discord invite constant, mobile menu, icons, `/#install` redirect, contact address assembled from `data-mail` attributes |
@@ -33,7 +32,7 @@ The static site at https://roboviolence.com, deployed to GitHub Pages from `main
 | `docs/ops/map-submissions.md` | Setting up, reviewing and operating map submissions |
 | `.github/workflows/worker.yml` | Tests the Worker on PRs; applies migrations and deploys it from `main` (ADR 0003) |
 | `tools/website-markdown.mjs` | Writes `website/<page>.md` from each page's `<main>` |
-| `tools/build-docs.mjs` | Builds `docs.html`, `docs/<slug>.html` and `.md` copies from the vault's `10-public/` into the deployed copy (ADR 0004) |
+| `tools/build-docs.mjs` | Builds `docs.html`, `docs/<slug>.html` and `.md` copies from the vault's `10-public/` into the deployed copy (ADR 0004); also a redirect from the old `server.html` address |
 | `tests/website/docs-fixture/` | Sample vault notes for the docs build test |
 | `package.json`, `package-lock.json` | The one build dependency, `marked`, at an exact version |
 | `tests/website/site.test.mjs` | Installer per OS against the asset names in the game's `build.yml`, OS detection, newest release incl. pre-releases, button offer and fallback, shared chrome, privacy contact, CDN and canonical tags, sitemap, robots.txt, Markdown copies, JSON-LD |

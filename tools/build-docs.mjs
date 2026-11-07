@@ -8,6 +8,8 @@ import { pathToFileURL } from 'node:url';
 import { marked } from 'marked';
 
 const SITE = 'https://roboviolence.com/';
+// Pages that became docs articles: the old address keeps working, for links already shared.
+const MOVED = { 'server.html': 'host-a-server' };
 
 // Headings get GitHub-style ids, so links like console-commands.md#a-user-commands land.
 export const headingId = (text) => text.toLowerCase().replace(/<[^>]+>/g, '').replace(/[^\p{L}\p{N} _-]/gu, '').trim().replace(/ /g, '-');
@@ -96,6 +98,11 @@ export function build(src, siteDir) {
     const html = page(parts, { path: `docs/${a.slug}.html`, title: a.title, description: a.description || a.title, md: `${a.slug}.md`, main, up: '../' });
     writeFileSync(join(docsDir, `${a.slug}.html`), html);
     writeFileSync(join(docsDir, `${a.slug}.md`), a.body.replace(/^\s+/, ''));
+  }
+
+  for (const [old, slug] of Object.entries(MOVED)) {
+    if (!articles.some((a) => a.slug === slug)) continue;
+    writeFileSync(join(siteDir, old), `<!doctype html>\n<meta charset="utf-8">\n<title>Moved</title>\n<link rel="canonical" href="${SITE}docs/${slug}.html">\n<meta http-equiv="refresh" content="0; url=docs/${slug}.html">\n<p>This page moved to <a href="docs/${slug}.html">the docs</a>.</p>\n`);
   }
 
   const listMd = articles.length
