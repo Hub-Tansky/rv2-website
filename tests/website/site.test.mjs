@@ -123,13 +123,17 @@ test('every page has the same menu and footer', () => {
   for (const page of pages) assert.equal(chrome(page), chrome('index.html'), page);
 });
 
-test('every Discord link opens in a new tab, and the menu offers support there', () => {
+test('every Discord link opens in a new tab', () => {
   for (const page of pages) {
     const links = read(`website/${page}`).match(/<a [^>]*data-discord[^>]*>/g) ?? [];
     assert.ok(links.length > 0, page);
     for (const link of links) assert.ok(link.includes('target="_blank" rel="noopener"'), `${page}: ${link}`);
   }
-  assert.ok(read('website/index.html').includes('rel="noopener">Get Support on Discord</a>'));
+});
+
+test('the menu is Download, Find other players on Discord, Docs, About', () => {
+  const menu = read('website/index.html').match(/<div class="menu"[\s\S]*?<\/div>/)[0];
+  assert.deepEqual([...menu.matchAll(/<a [^>]*>([^<]*)<\/a>/g)].map((m) => m[1]), ['Download', 'Find other players on Discord', 'Docs', 'About']);
 });
 
 test('the privacy contact is assembled in the browser, never written in the page', () => {
@@ -191,8 +195,6 @@ test('every page has a current Markdown copy, linked from the page and from llms
     assert.ok(llms.includes(`(https://roboviolence.com/${md})`), `llms.txt links ${md}`);
   }
   assert.ok(llms.includes(`(${DISCORD_INVITE})`), 'llms.txt has the current Discord invite');
-  // Code blocks keep their text exactly: the env-file lines start in column 0, ready to paste
-  assert.match(read('website/server.md'), /\n# join password, empty for none\nBV2_SV_PASSWORD=\n# admin login password\nBV2_ADMIN_PASS=\n/);
 });
 
 test('toMarkdown maps the pages\' HTML: own pages to .md, other sites unchanged', () => {
@@ -293,11 +295,13 @@ test('build-docs turns vault notes into docs pages with the site chrome (ADR 000
     assert.ok(existsSync(join(site, 'docs/_attachments/list.png')));
     assert.ok(at('sitemap.xml').includes('<loc>https://roboviolence.com/docs/host-a-server.html</loc>'));
     assert.ok(at('llms.txt').includes('(https://roboviolence.com/docs/console-commands.md)'));
+    assert.ok(at('server.html').includes('url=docs/host-a-server.html'), 'the moved page redirects');
     // no source folder: the page still exists
     const empty = mkdtempSync(join(tmpdir(), 'rv2-site-'));
     cpSync(new URL('website/', root), empty, { recursive: true });
     assert.equal(build(join(empty, 'missing'), empty).length, 0);
     assert.ok(readFileSync(join(empty, 'docs.html'), 'utf8').includes('No articles yet.'));
+    assert.ok(!existsSync(join(empty, 'server.html')), 'no redirect to a missing article');
     rmSync(empty, { recursive: true });
   } finally {
     rmSync(site, { recursive: true });
