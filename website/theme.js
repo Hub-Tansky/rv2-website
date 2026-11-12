@@ -123,6 +123,21 @@
             '&:hover, &[aria-current]': { color: c.fg },
             [lg]: { padding: '0' },
           },
+          // The Download entry is a plain link on the landing page (its hero has the big button) and a button on every
+          // other page, so the call to action stays visible wherever a visitor lands.
+          'body:has(main.page) .nav-cta': {
+            alignSelf: 'flex-start',
+            marginTop: '0.5rem',
+            borderRadius: '0.5rem',
+            background: c.blue,
+            color: '#fff',
+            fontWeight: '700',
+            padding: '0.5rem 1rem',
+            boxShadow: `0 0 18px ${rgba(c.blue, 0.4)}`,
+            transition: 'background 150ms, box-shadow 150ms',
+            '&:hover, &[aria-current]': { background: c.blueHover, color: '#fff', boxShadow: `0 0 24px ${rgba(c.blue, 0.55)}` },
+            [lg]: { marginTop: '0', marginBlock: '-0.375rem', padding: '0.375rem 0.875rem' },
+          },
           '.site-footer': { borderTop: `1px solid ${c.line}` },
           '.site-footer-inner': {
             display: 'flex',
@@ -196,6 +211,10 @@
           '.prose-rv li': { margin: '0.3rem 0' },
           '.prose-rv a': link,
           '.prose-rv strong': { color: c.fg },
+          '.prose-rv table': { width: '100%', borderCollapse: 'collapse', margin: '0 0 1.5rem', fontSize: '0.975rem' },
+          '.prose-rv th': { textAlign: 'left', fontWeight: '600', color: c.muted, borderBottom: `1px solid ${c.line}`, padding: '0.5rem 0.75rem 0.5rem 0' },
+          '.prose-rv td': { borderBottom: `1px solid ${c.line}`, padding: '0.6rem 0.75rem 0.6rem 0', verticalAlign: 'top' },
+          '.prose-rv td:first-child': { whiteSpace: 'nowrap' },
         });
       },
     ],

@@ -10,10 +10,10 @@ export const DISCORD_INVITE = 'https://discord.gg/gRehxx43z';
 
 // The file behind each download button; release asset names come from build.yml (release job).
 export const PLATFORMS = {
-  windows: { label: 'Download for Windows', suffix: '-setup.exe' },
-  macos: { label: 'Download for macOS', suffix: '.dmg', note: 'Apple Silicon (M1 or newer)' },
-  deb: { label: '.deb (Ubuntu, Mint, Debian…)', suffix: '-linux-x64.deb' },
-  tarGz: { label: '.tar.gz (other)', suffix: '-linux-x64.tar.gz' },
+  windows: { label: 'Play now', suffix: '-setup.exe' },
+  macos: { label: 'Play now', suffix: '.dmg', note: 'Apple Silicon (M1 or newer)' },
+  deb: { label: 'Play now (.deb)', suffix: '-linux-x64.deb' },
+  tarGz: { label: 'Play now (.tar.gz)', suffix: '-linux-x64.tar.gz' },
 };
 
 // The buttons each OS gets, in order. Browsers don't tell the Linux distribution, so Linux gets both packages.
@@ -61,7 +61,7 @@ export function downloadOffer(release, file) {
 // The download buttons for this OS; phones and unknown systems get one button to the install guide's list.
 export function downloadOffers(release, os) {
   const files = BUTTONS[os];
-  if (!files) return [{ label: 'Download', href: DOWNLOADS, note: 'Windows, macOS and Linux. Pick a file below.' }];
+  if (!files) return [{ label: 'Play now', href: DOWNLOADS, note: 'Windows, macOS and Linux. Pick a file below.' }];
   return files.map((file) => downloadOffer(release, file));
 }
 

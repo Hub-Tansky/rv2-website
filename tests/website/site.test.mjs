@@ -52,8 +52,8 @@ test('Linux gets two buttons: the .deb first, then the tar.gz', () => {
   assert.deepEqual(
     downloadOffers(release, 'linux').map(({ label, href }) => [label, href]),
     [
-      ['.deb (Ubuntu, Mint, Debian…)', 'https://example.invalid/roboviolence2-linux-x64.deb'],
-      ['.tar.gz (other)', 'https://example.invalid/roboviolence2-linux-x64.tar.gz'],
+      ['Play now (.deb)', 'https://example.invalid/roboviolence2-linux-x64.deb'],
+      ['Play now (.tar.gz)', 'https://example.invalid/roboviolence2-linux-x64.tar.gz'],
     ],
   );
   assert.equal(downloadOffers(release, 'windows').length, 1);
@@ -75,7 +75,7 @@ test('newestRelease takes the first non-draft release, pre-releases included', (
 
 test('downloadOffer: installer, releases page fallback, or the install guide list', () => {
   assert.deepEqual(downloadOffer(release, 'macos'), {
-    label: 'Download for macOS',
+    label: 'Play now',
     href: 'https://example.invalid/roboviolence2-macos-arm64.dmg',
     note: 'v0.0.2 alpha, roboviolence2-macos-arm64.dmg, 1.0 MB. Apple Silicon (M1 or newer)',
   });
@@ -86,9 +86,12 @@ test('downloadOffer: installer, releases page fallback, or the install guide lis
   assert.deepEqual(downloadOffers(release, null).map((o) => o.href), [DOWNLOADS]);
 });
 
+// The source archive and the macOS server zip are left out: the guide is for players, and the server zip is
+// covered by the Host game server docs page.
 test('the install guide names the files the release job publishes', () => {
   const install = read('website/install.html');
-  for (const name of assetNames.filter((n) => !n.endsWith('-source.tar.gz'))) assert.ok(install.includes(name), name);
+  const playerFiles = assetNames.filter((n) => !n.endsWith('-source.tar.gz') && n !== 'roboviolence2-macos-arm64.zip');
+  for (const name of playerFiles) assert.ok(install.includes(name), name);
 });
 
 test('old links to the install section of the landing page go to the install guide', () => {

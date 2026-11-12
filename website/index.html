@@ -71,7 +71,7 @@
     <a class="site-brand" href="./"><img src="img/rv2-icon.png" width="32" height="32" alt="">Robo Violence 2</a>
     <button class="menu-button" type="button" data-menu-button aria-expanded="false" aria-controls="menu"><i data-lucide="menu"></i><span class="sr-only">Menu</span></button>
     <div class="menu" id="menu">
-      <a class="nav-link" href="install.html">Download</a>
+      <a class="nav-link nav-cta" href="install.html">Download</a>
       <a class="nav-link" data-discord href="#" target="_blank" rel="noopener">Find other players on Discord</a>
       <a class="nav-link" href="docs.html">Docs</a>
       <a class="nav-link" href="about.html">About</a>
@@ -84,13 +84,11 @@
     <div class="pointer-events-none absolute inset-0 bg-grid bg-cell [mask-image:linear-gradient(180deg,#000_20%,transparent_90%)]" aria-hidden="true"></div>
     <div class="site-container relative grid items-center gap-10 pb-16 pt-10 md:grid-cols-[1.15fr_0.85fr] md:pb-24 md:pt-16 xl:gap-16">
       <div>
-        <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-line bg-panel/70 px-3 py-1 text-sm text-muted"><span class="h-2 w-2 rounded-full bg-brand-red"></span>Free and open source · Alpha</p>
         <h1 class="text-[2.5rem] font-extrabold leading-none tracking-tight sm:text-6xl xl:text-7xl">Robo Violence 2</h1>
-        <p class="mt-6 max-w-xl text-lg text-muted md:text-xl">Free top-down multiplayer arena shooter for Windows, macOS and Linux. We continue the story of BaboViolent 2 on a modern base.</p>
+        <p class="mt-6 max-w-xl text-lg text-muted md:text-xl">Free top-down multiplayer arena shooter for Windows, macOS and Linux. We continue the story of BaboViolent 2.</p>
         <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <a class="btn-primary" id="download-button" data-download href="install.html#downloads"><i data-lucide="download"></i><span data-label>Download</span></a>
-          <a class="btn-secondary" data-download hidden href="install.html#downloads"><i data-lucide="download"></i><span data-label>Download</span></a>
-          <a class="btn-secondary" href="install.html"><i data-lucide="book-open"></i>Install guide and other platforms</a>
+          <a class="btn-primary" id="download-button" data-download href="install.html#downloads"><i data-lucide="download"></i><span data-label>Play now</span></a>
+          <a class="btn-secondary" data-download hidden href="install.html#downloads"><i data-lucide="download"></i><span data-label>Play now</span></a>
         </div>
       </div>
       <img class="mx-auto w-full max-w-md [mask-image:radial-gradient(circle_at_center,#000_45%,transparent_72%)] md:max-w-none" src="img/hero.webp" width="1000" height="1000" alt="Top-down arena: a blue and a red player shoot at each other">
@@ -101,13 +99,12 @@
   <section id="server-status" hidden></section>
 
   <section class="site-container py-16 md:py-24" id="features">
-    <h2 class="max-w-3xl text-3xl font-bold tracking-tight md:text-4xl">Small arenas, fast rounds, no strings attached</h2>
-    <p class="mt-4 max-w-3xl text-lg text-muted">Players drive armed balls through tight maps and fight over the internet or a local network.</p>
-    <div class="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+    <h2 class="max-w-3xl text-3xl font-bold tracking-tight md:text-4xl">Deceptively simple, fast paced</h2>
+    <div class="mt-10 grid gap-5 md:grid-cols-3">
       <div class="card">
         <i class="text-brand-red" data-lucide="swords"></i>
-        <h3 class="mt-4 text-lg font-bold">Three game modes</h3>
-        <p class="mt-2 text-muted">Deathmatch, team deathmatch and capture the flag.</p>
+        <h3 class="mt-4 text-lg font-bold">Various game modes</h3>
+        <p class="mt-2 text-muted">Capture the flag, team deathmatch, free for all and champion.</p>
       </div>
       <div class="card">
         <i class="text-link" data-lucide="monitor"></i>
@@ -115,14 +112,9 @@
         <p class="mt-2 text-muted">One game, three systems, and everyone plays on the same servers.</p>
       </div>
       <div class="card">
-        <i class="text-brand-red" data-lucide="server"></i>
-        <h3 class="mt-4 text-lg font-bold">Servers ready to join</h3>
-        <p class="mt-2 text-muted">Our capture the flag and team deathmatch servers are in the in-game server list. You can also <a class="link" href="docs/host-a-server.html">run your own server</a>.</p>
-      </div>
-      <div class="card">
         <i class="text-link" data-lucide="shield-check"></i>
-        <h3 class="mt-4 text-lg font-bold">Free for good</h3>
-        <p class="mt-2 text-muted">No accounts, ads, analytics or tracking. The code is open source and available on <a class="link" href="https://github.com/Hub-Tansky/RoboViolence2">GitHub</a>.</p>
+        <h3 class="mt-4 text-lg font-bold">Absolutely free</h3>
+        <p class="mt-2 text-muted">No in-app purchases, ads, analytics or tracking. The code is open source.</p>
       </div>
     </div>
   </section>
@@ -137,11 +129,11 @@
         </li>
         <li class="flex gap-4">
           <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-blue font-bold text-white" aria-hidden="true">2</span>
-          <div><h3 class="text-lg font-bold">Install</h3><p class="mt-1 text-muted">Follow the <a class="link" href="install.html">install guide</a> for Windows, macOS or Linux.</p></div>
+          <div><h3 class="text-lg font-bold">Install</h3><p class="mt-1 text-muted">Follow the <a class="link" href="install.html#install-steps">install guide</a> for Windows, macOS or Linux.</p></div>
         </li>
         <li class="flex gap-4">
           <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-blue font-bold text-white" aria-hidden="true">3</span>
-          <div><h3 class="text-lg font-bold">Play</h3><p class="mt-1 text-muted">Open the server list in the game and join a match.</p></div>
+          <div><h3 class="text-lg font-bold">Play</h3><p class="mt-1 text-muted">Choose server and <a class="link" href="docs/game-manual.html">start playing</a>.</p></div>
         </li>
       </ol>
     </div>
