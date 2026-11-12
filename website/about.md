@@ -4,7 +4,7 @@ Robo Violence 2 is a free top-down multiplayer arena shooter. Players drive arme
 
 We continue the story of BaboViolent 2 on a modern base, with one codebase for Windows, macOS and Linux, plus game servers hosted by us or other players.
 
-**Status: alpha.** The game works with placeholder art. It plays best with your own copy of the original BaboViolent 2 data (see [Installation instructions](https://roboviolence.com/install.md#data)). Replacement art comes later.
+**Status: alpha.** The game works with placeholder art. It plays best with the original BaboViolent 2 data, which the game offers to download on first start (see [Installation instructions](https://roboviolence.com/install.md)). Replacement art comes later.
 
 ## Credits
 

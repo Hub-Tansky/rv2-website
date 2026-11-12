@@ -61,7 +61,7 @@ export function downloadOffer(release, file) {
 // The download buttons for this OS; phones and unknown systems get one button to the install guide's list.
 export function downloadOffers(release, os) {
   const files = BUTTONS[os];
-  if (!files) return [{ label: 'Download', href: DOWNLOADS, note: 'Windows, macOS and Linux. Pick a file below.' }];
+  if (!files) return [{ label: 'Play now', href: DOWNLOADS, note: 'Windows, macOS and Linux. Pick a file below.' }];
   return files.map((file) => downloadOffer(release, file));
 }
 

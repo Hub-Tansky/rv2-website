@@ -44,23 +44,15 @@
   <div class="page-body site-container">
     <div class="prose-rv">
       <h1>Install Robo Violence 2</h1>
-      <p class="notice"><strong>Alpha:</strong> in-progress experimental version with placeholder art. For now we recommend using your own original <a href="https://github.com/Daivuk/BaboViolent2">BaboViolent 2</a> data.</p>
+      <p class="notice"><strong>Alpha:</strong> in-progress experimental version with placeholder art. For now we recommend using the original <a href="https://github.com/Daivuk/BaboViolent2">BaboViolent 2</a> data (choose <strong>Download and play</strong> on first start).</p>
     </div>
 
     <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
-      <a class="btn-primary" id="download-button" data-download href="#downloads"><i data-lucide="download"></i><span data-label>Download</span></a>
-      <a class="btn-secondary" data-download hidden href="#downloads"><i data-lucide="download"></i><span data-label>Download</span></a>
-      <p class="text-sm text-muted" id="download-note"></p>
+      <a class="btn-primary" id="download-button" data-download href="#downloads"><i data-lucide="download"></i><span data-label>Play now</span></a>
+      <a class="btn-secondary" data-download hidden href="#downloads"><i data-lucide="download"></i><span data-label>Play now</span></a>
     </div>
 
     <div class="prose-rv mt-12">
-      <h2 id="data">Original game data</h2>
-      <ol>
-        <li>Download the original game: <a href="https://github.com/Daivuk/BaboViolent2/archive/refs/heads/master.zip">BaboViolent2-master.zip</a>.</li>
-        <li>Unzip it into your Downloads, Desktop or Documents folder. Robo Violence 2 finds it there on start.</li>
-        <li>Otherwise, the game asks on first start: choose <code>BaboViolent2-master/BaboViolent2/Content/main/</code> or any folder above it.</li>
-      </ol>
-
       <h2 id="downloads">Downloads <span class="text-base font-medium text-muted" id="release-tag"></span></h2>
       <ul id="download-list">
         <li><a href="https://github.com/Hub-Tansky/RoboViolence2/releases">All files on the GitHub releases page</a></li>
@@ -70,24 +62,18 @@
     <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 scroll-mt-24" id="install-steps">
       <div class="card prose-rv min-w-0" id="windows">
         <h3 class="!mt-0">Windows</h3>
-        <p>Run <code>roboviolence2-win-x64-msvc-setup.exe</code>. It installs for your user only and adds a Start-menu entry.</p>
+        <p>Run <code>roboviolence2-win-x64-msvc-setup.exe</code>.</p>
         <p>Until we ship the first release signed with a certificate, the installer is unsigned. On "Windows protected your PC" (SmartScreen) choose <strong>More info → Run anyway</strong>.</p>
       </div>
       <div class="card prose-rv min-w-0" id="macos">
         <h3 class="!mt-0">macOS</h3>
         <p>Open <code>roboviolence2-macos-arm64.dmg</code> and drag <strong>Robo Violence 2</strong> to Applications.</p>
-        <p>The app is unsigned, so Gatekeeper blocks the first start. Open <strong>System Settings → Privacy &amp; Security</strong> and click <strong>Open Anyway</strong>, or run:</p>
-        <pre><code>xattr -dr com.apple.quarantine "/Applications/Robo Violence 2.app"</code></pre>
-        <p>To run a game server on a Mac, get <code>roboviolence2-macos-arm64.zip</code> from the same release (<a href="docs/host-a-server.html">Host game server</a>).</p>
+        <p>The app is unsigned, so Gatekeeper blocks the first start. Open <strong>System Settings → Privacy &amp; Security</strong> and click <strong>Open Anyway</strong>.</p>
       </div>
       <div class="card prose-rv min-w-0 md:col-span-2 xl:col-span-1" id="linux">
         <h3 class="!mt-0">Linux</h3>
         <p>Ubuntu, Mint, Debian: install <code>roboviolence2-linux-x64.deb</code>, then start Robo Violence 2 from the applications menu.</p>
-        <pre><code>sudo apt install ./roboviolence2-linux-x64.deb</code></pre>
-        <p>Other distributions: unpack the <code>.tar.gz</code> and start:</p>
-        <pre><code>tar -xzf roboviolence2-linux-x64.tar.gz
-cd roboviolence2-linux-x64
-./run-client.sh</code></pre>
+        <p>Other distributions: unpack <code>roboviolence2-linux-x64.tar.gz</code> and start <code>run-client.sh</code>.</p>
       </div>
     </div>
 

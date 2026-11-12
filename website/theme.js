@@ -136,7 +136,7 @@
             boxShadow: `0 0 18px ${rgba(c.blue, 0.4)}`,
             transition: 'background 150ms, box-shadow 150ms',
             '&:hover, &[aria-current]': { background: c.blueHover, color: '#fff', boxShadow: `0 0 24px ${rgba(c.blue, 0.55)}` },
-            [lg]: { marginTop: '0', padding: '0.5rem 1rem' },
+            [lg]: { marginTop: '0', marginBlock: '-0.375rem', padding: '0.375rem 0.875rem' },
           },
           '.site-footer': { borderTop: `1px solid ${c.line}` },
           '.site-footer-inner': {
