@@ -211,6 +211,10 @@
           '.prose-rv li': { margin: '0.3rem 0' },
           '.prose-rv a': link,
           '.prose-rv strong': { color: c.fg },
+          '.prose-rv table': { width: '100%', borderCollapse: 'collapse', margin: '0 0 1.5rem', fontSize: '0.975rem' },
+          '.prose-rv th': { textAlign: 'left', fontWeight: '600', color: c.muted, borderBottom: `1px solid ${c.line}`, padding: '0.5rem 0.75rem 0.5rem 0' },
+          '.prose-rv td': { borderBottom: `1px solid ${c.line}`, padding: '0.6rem 0.75rem 0.6rem 0', verticalAlign: 'top' },
+          '.prose-rv td:first-child': { whiteSpace: 'nowrap' },
         });
       },
     ],
