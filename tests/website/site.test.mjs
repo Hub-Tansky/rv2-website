@@ -52,8 +52,8 @@ test('Linux gets two buttons: the .deb first, then the tar.gz', () => {
   assert.deepEqual(
     downloadOffers(release, 'linux').map(({ label, href }) => [label, href]),
     [
-      ['.deb (Ubuntu, Mint, Debian…)', 'https://example.invalid/roboviolence2-linux-x64.deb'],
-      ['.tar.gz (other)', 'https://example.invalid/roboviolence2-linux-x64.tar.gz'],
+      ['Play now (.deb)', 'https://example.invalid/roboviolence2-linux-x64.deb'],
+      ['Play now (.tar.gz)', 'https://example.invalid/roboviolence2-linux-x64.tar.gz'],
     ],
   );
   assert.equal(downloadOffers(release, 'windows').length, 1);
@@ -75,7 +75,7 @@ test('newestRelease takes the first non-draft release, pre-releases included', (
 
 test('downloadOffer: installer, releases page fallback, or the install guide list', () => {
   assert.deepEqual(downloadOffer(release, 'macos'), {
-    label: 'Download for macOS',
+    label: 'Play now',
     href: 'https://example.invalid/roboviolence2-macos-arm64.dmg',
     note: 'v0.0.2 alpha, roboviolence2-macos-arm64.dmg, 1.0 MB. Apple Silicon (M1 or newer)',
   });

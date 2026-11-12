@@ -1,6 +1,6 @@
 # About Robo Violence 2
 
-Robo Violence 2 is a free top-down multiplayer arena shooter. Players drive armed balls through small arenas and play deathmatch, team deathmatch and capture the flag against each other.
+Robo Violence 2 is a free top-down multiplayer arena shooter. Players drive armed balls through small arenas and play capture the flag, team deathmatch, free for all and champion against each other.
 
 We continue the story of BaboViolent 2 on a modern base, with one codebase for Windows, macOS and Linux, plus game servers hosted by us or other players.
 
@@ -8,12 +8,12 @@ We continue the story of BaboViolent 2 on a modern base, with one codebase for W
 
 ## Credits
 
-Robo Violence 2 is a fork of **BaboViolent 2** built on its GPLv3 source release: [github.com/Daivuk/BaboViolent2](https://github.com/Daivuk/BaboViolent2). Big thanks to authors and to everyone who made BaboViolent 2 possible.
+Robo Violence 2 is a fork of **BaboViolent 2**, the best "balls with guns" game ever, built on its GPLv3 source release: [github.com/Daivuk/BaboViolent2](https://github.com/Daivuk/BaboViolent2). Big thanks to authors and to everyone who made BaboViolent 2 possible.
 
 The GPL covers the code only. The original assets (maps, models, textures, sounds, music, fonts) and the name "BaboViolent 2" are not part of this project and are not redistributed here.
 
 ## More
 
-- Robo Violence 2 source code: [github.com/Hub-Tansky/RoboViolence2](https://github.com/Hub-Tansky/RoboViolence2)
-- Bugs and ideas: [issues](https://github.com/Hub-Tansky/RoboViolence2/issues).
 - Community channel for feedback: [Discord](https://discord.gg/gRehxx43z)
+- Bugs and ideas: [issues](https://github.com/Hub-Tansky/RoboViolence2/issues).
+- Robo Violence 2 source code: [github.com/Hub-Tansky/RoboViolence2](https://github.com/Hub-Tansky/RoboViolence2)
