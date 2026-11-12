@@ -8,6 +8,8 @@
 
 - [All files on the GitHub releases page](https://github.com/Hub-Tansky/RoboViolence2/releases)
 
+## Install guide
+
 ### Windows
 
 Run `roboviolence2-win-x64-msvc-setup.exe`.
