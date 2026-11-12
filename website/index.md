@@ -21,7 +21,7 @@ No in-app purchases, ads, analytics or tracking. The code is open source.
 ## Playing in three steps
 
 1. **Download** The button above picks the installer for your system.
-2. **Install** Follow the [install guide](https://roboviolence.com/install.md#install-steps) for Windows, macOS or Linux.
+2. **Install** Follow the [install guide](https://roboviolence.com/install.md#install-guide) for Windows, macOS or Linux.
 3. **Play** Choose server and [start playing](https://roboviolence.com/docs/game-manual.md).
 
 ## Find players and follow releases
